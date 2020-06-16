@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -75,23 +76,25 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
 
-        'ENGINE': '$$$',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': '$$$',
+        'NAME': 'postgres',
 
-        'USER': '$$$',
+        'USER': 'postgres_admin',
 
-        'PASSWORD': '$$$',
+        'PASSWORD': 'adminadmin',
 
-        'HOST': '$$$',
+        'HOST': 'database-pit-app.cxr6c5y7akrw.us-east-2.rds.amazonaws.com',
 
-        'PORT': '$$$',
+        'PORT': '5432',
 
     }
 }
+
 
 
 # Password validation
@@ -131,3 +134,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

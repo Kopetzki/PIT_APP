@@ -161,13 +161,13 @@ class TimesHomeless(models.Model):
     def __str__(self):
         return self.get_timeshomeless_display()
 
-
+#==============================================================================================================
 class Observation_Individual(models.Model):
     client_location = models.CharField(max_length=200, help_text="Location where observed")
     client_homeless = models.ForeignKey(Homeless, on_delete=models.CASCADE)
     client_age = models.ForeignKey(Age, on_delete=models.CASCADE)
     client_gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
-    client_race = models.ManyToManyField(Race)
+    client_race = models.ManyToManyField(Race, help_text="Hold down \"Control\", or \"Command\" on a Mac, to select more than one.")
     client_ethnicity = models.ForeignKey(Ethnicity, on_delete=models.CASCADE)
     client_information = models.CharField(max_length=200, help_text="Other information or identifying characteristics")
 
@@ -192,7 +192,7 @@ class Observation(models.Model):
     obs_children = models.IntegerField(default=0, null=True)
     obs_unsure = models.IntegerField(default=0, null=True)
     obs_householdnum = models.IntegerField(editable=False, default=0, null=False)
-    obs_client = models.ManyToManyField(Observation_Individual)
+    obs_client = models.ManyToManyField(Observation_Individual, help_text="Hold down \"Control\", or \"Command\" on a Mac, to select more than one.")
     obs_time = models.DateTimeField(default=timezone.now)
     obs_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
