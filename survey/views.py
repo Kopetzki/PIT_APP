@@ -10,7 +10,7 @@ from .forms import Observation_Individual_Form, Observation_Form
 # Create your views here.
 # the survey index does nothing right now
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're at the basic survey index.")
 
 # ===================================================================
 # Observation Individual
@@ -46,6 +46,10 @@ def observation_ind_new(request):
 # ===================================================================
 # General Observation
 # WIP: Details need to be smoothed out
+def observation_detail(request, pk):
+    obser = get_object_or_404(Observation, pk=pk)
+    return render(request, 'survey/observation_detail.html', {'obser': obser})
+
 def general_observation(request):
     if request.method == "POST":
         form = Observation_Form(request.POST)
@@ -55,7 +59,7 @@ def general_observation(request):
             # TO DO: Need to add the obs_user field here with account management BEFORE saving
             # May also need to add "obs_householdnum"
 
-            return redirect('observation_ind_detail', pk=obs.pk)
+            return redirect('observation_detail', pk=obs.pk)
     else:
         # default w/o POST request: render the forms
         # will need an Observation form

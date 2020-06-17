@@ -13,4 +13,5 @@ urlpatterns = [
 
     # WIP: General Observations
     path('observation_new/', views.general_observation, name='general_observation'),
+    path('observation_detail/<int:pk>/', views.observation_detail, name='observation_detail'),
 ]
