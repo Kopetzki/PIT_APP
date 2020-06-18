@@ -1,0 +1,29 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}Observation Individual Detail{% endblock %}
+
+{% block content %}
+    <h2 style="text-align: center">The Individual Observation You Just Submitted</h2>
+
+    <div class="container">
+        <hr>
+
+        <div class="obser">
+            <p><b>Client Location:</b> {{ obser.client_location }}</p>
+            <p><b>Client Homeless:</b> {{ obser.client_homeless|linebreaksbr }}</p>
+            <p><b>Client Age:</b> {{ obser.client_age|linebreaksbr }}</p>
+            <p><b>Client Gender:</b> {{ obser.client_gender|linebreaksbr }}</p>
+            <p><b>Client Ethnicity:</b> {{ obser.client_ethnicity|linebreaksbr }}</p>
+            <p><b>Client Race:</b> {{ obser.client_information|linebreaksbr }}</p>
+        </div>
+
+        <div class="d-flex justify-content-center" style="padding-top: 20px">
+            <p><b>Would you like to add another individual?</b></p>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/survey/observation_ind_new" class="btn btn-primary" role="button">Add Another</a>
+        </div>
+    </div>
+{% endblock %}
+
+

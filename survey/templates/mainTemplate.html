@@ -1,0 +1,106 @@
+<html lang="en">
+
+    <style>
+        html,
+        body,
+        header,
+        .view {
+          height: 100%;
+        }
+
+        @media (max-width: 740px) {
+          html,
+          body,
+          header,
+          .view {
+            height: 100vh;
+          }
+        }
+
+        .top-nav-collapse {
+          background-color: #78909c !important;
+        }
+
+        .navbar:not(.top-nav-collapse) {
+          background: transparent !important;
+        }
+
+        @media (max-width: 991px) {
+          .navbar:not(.top-nav-collapse) {
+            background: #78909c !important;
+          }
+        }
+
+        h1 {
+          letter-spacing: 8px;
+        }
+
+        h5 {
+          letter-spacing: 3px;
+        }
+
+        .hr-light {
+          border-top: 3px solid #fff;
+          width: 80px;
+        }
+
+    </style>
+
+    <title>{% block title %} {% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <body style="background-color: rgba(76,125,172,0.63)">
+          <!--Navbar-->
+          <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+            <div class="container">
+              <a class="navbar-brand" href="#"><strong>P.I.T. Count</strong></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent-7">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/survey/observation_ind_new/">Add Individuals</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/survey/observation_new/">Add Observation</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/resources">Resources</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </nav>
+
+
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 70px">
+        <div class="card">
+            <div class="card-body">
+
+          {% block content %}
+
+
+          {% endblock %}
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    </body>
+</html>
+
