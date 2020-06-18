@@ -1,5 +1,5 @@
 #from survey.models import Ethnicity, Age, Homeless, Gender, Race
-from survey.models import LastNight, YesNoDK, Relationship, GenderDetailed, HomelessLength, TimesHomeless
+from survey.models import LastNight, YesNoDK, Relationship, GenderDetailed, HomelessLength, TimesHomeless, Barriers
 
 '''def create_tables():
     for x in Ethnicity.STATUS:
@@ -26,4 +26,6 @@ def create_tables2():
         HomelessLength.objects.create(homelesslength=k[0])
     for m in TimesHomeless.STATUS:
         TimesHomeless.objects.create(timeshomeless=m[0])
+    for n in Barriers.STATUS:
+        Barriers.objects.create(barriers=n[0])
 
