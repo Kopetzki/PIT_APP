@@ -78,17 +78,17 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 DATABASES = {
     'default': {
 
-        'ENGINE': '$$$',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': '$$$',
+        'NAME': 'postgres',
 
-        'USER': '$$$',
+        'USER': 'postgres_admin',
 
-        'PASSWORD': '$$$',
+        'PASSWORD': 'adminadmin',
 
-        'HOST': '$$$',
+        'HOST': 'database-pit-app.cxr6c5y7akrw.us-east-2.rds.amazonaws.com',
 
-        'PORT': '$$$',
+        'PORT': '5432',
 
     }
 }
