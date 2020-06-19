@@ -11,7 +11,7 @@ There are instructions on how to install `docker`
 Once `docker-compose` is installed you
 can run the app using the following commands:
  
- `docker-compose build && docker-compose up`
+ `docker-compose up --build`
 
 This will rebuild the docker images to the latest versions, bring
 up a postgres database locally, run Django migration scripts on that
