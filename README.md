@@ -31,5 +31,10 @@ database:
  - `DATABASE_PASSWORD`
  - `DATABASE_HOST`
  - `DATABASE_PORT` 
+ 
+ You can set these all in a single command like so, replacing `XXX`
+ with the correct value for your database:
+ 
+`DATABASE_NAME=XXX DATABASE_USER=XXX DATABASE_PASSWORD=XXX DATABASE_HOST=XXX DATABASE_PORT=XXX python3 manage.py runserver`
 
 
