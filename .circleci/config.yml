@@ -16,7 +16,7 @@ jobs:
           name: Test
       - setup_remote_docker
       - run:
-          command: docker-compose up --build --exit-code-from web
+          command: docker-compose -f docker-compose-circleci.yml up --build --exit-code-from web
           name: Start docker environment successfully.
 
 workflows:
