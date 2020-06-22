@@ -11,7 +11,7 @@ def index(request):
     return render(request, 'base/home.html')
 
 def login(request):
-    return render(request, 'base/login.html')
+    return render(request, 'base/../templates/registration/login.html')
 
 def resources(request):
     return render(request, 'base/Resources.html')
