@@ -11,7 +11,7 @@ There are instructions on how to install `docker`
 Once `docker-compose` is installed you
 can run the app using the following commands:
  
- `docker-compose build && docker-compose up`
+ `docker-compose up --build`
 
 This will rebuild the docker images to the latest versions, bring
 up a postgres database locally, run Django migration scripts on that
@@ -31,5 +31,10 @@ database:
  - `DATABASE_PASSWORD`
  - `DATABASE_HOST`
  - `DATABASE_PORT` 
+ 
+ You can set these all in a single command like so, replacing `XXX`
+ with the correct value for your database:
+ 
+`DATABASE_NAME=XXX DATABASE_USER=XXX DATABASE_PASSWORD=XXX DATABASE_HOST=XXX DATABASE_PORT=XXX python3 manage.py runserver`
 
 
