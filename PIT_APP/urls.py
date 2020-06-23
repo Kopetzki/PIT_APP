@@ -22,9 +22,12 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
 
+    # User views
     path('login/', views.login, name='login'),
-    path('resources/', views.resources, name='resources'),
+    path('user1/', views.user1, name='user1'),
 
     path('survey/', include('survey.urls')),
+    path('resources/', views.resources, name='resources'),
     path('admin/', admin.site.urls),
+    # will need another admin view for our custom dashboard
 ]

@@ -1,0 +1,57 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}Survey Individual Detail{% endblock %}
+
+{% block content %}
+    <h2 style="text-align: center">The Survey on an Individual You Just Submitted</h2>
+
+    <div class="container">
+        <hr>
+
+        <div class="survey">
+            <p><b>Client survey initials:</b> {{ survey.client_survey_initials }}</p>
+            <p><b>Client survey relationship:</b> {{ survey.client_survey_relationship|linebreaksbr }}</p>
+
+            <p><b>Client survey hhconfirm:</b> {{ survey.client_survey_hhconfirm|linebreaksbr }}</p>
+            <p><b>Client survey nonhhlastnight:</b> {{ survey.client_survey_nonhhlastnight|linebreaksbr }}</p>
+            <p><b>Client survey age exact:</b> {{ survey.client_survey_age_exact|linebreaksbr }}</p>
+            <p><b>Client survey age grouped:</b> {{ survey.client_survey_age_grouped|linebreaksbr }}</p>
+            <p><b>Client survey ethnicity:</b> {{ survey.client_survey_ethnicity|linebreaksbr }}</p>
+            <p><b>Client survey race:</b> {{ survey.client_survey_race|linebreaksbr }}</p>
+            <p><b>Client survey race other:</b> {{ survey.client_survey_race_other|linebreaksbr }}</p>
+            <p><b>Client survey gender:</b> {{ survey.client_survey_gender|linebreaksbr }}</p>
+            <p><b>Client survey served:</b> {{ survey.client_survey_served|linebreaksbr }}</p>
+
+            <p><b>Client survey served guard res:</b> {{ survey.client_survey_served_guard_res|linebreaksbr }}</p>
+            <p><b>Client survey served VHA:</b> {{ survey.client_survey_served_VHA|linebreaksbr }}</p>
+            <p><b>Client survey benefits:</b> {{ survey.client_survey_benefits|linebreaksbr }}</p>
+            <p><b>Client survey firsttime:</b> {{ survey.client_surey_firsttime|linebreaksbr }}</p>
+            <p><b>Client survey homelesslength:</b> {{ survey.client_survey_homelesslength|linebreaksbr }}</p>
+            <p><b>Client survey homelesslength number:</b> {{ survey.client_survey_homelesslength_number|linebreaksbr }}</p>
+
+            <p><b>Client survey timeshomeless:</b> {{ survey.client_survey_timeshomeless|linebreaksbr }}</p>
+            <p><b>Client survey timeshomeless length:</b> {{ survey.client_survey_timeshomeless_length|linebreaksbr }}</p>
+            <p><b>Client survey timeshomeless number:</b> {{ survey.client_survey_timeshomeless_number|linebreaksbr }}</p>
+
+            <p><b>Client survey over18:</b> {{ survey.client_survey_over18|linebreaksbr }}</p>
+        </div>
+
+        <hr>
+        <div class="d-flex justify-content-center" style="padding-top: 20px">
+            <p><b>Would you like to add another individual survey?</b></p>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/survey/survey_new_ind" class="btn btn-info" role="button">Add Another</a>
+        </div>
+
+        <div class="d-flex justify-content-center" style="padding-top: 20px">
+            <p><b>If not, proceed to general survey.</b></p>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/survey/survey_new" class="btn btn-success" role="button">Add Survey</a>
+        </div>
+
+    </div>
+{% endblock %}
+
+

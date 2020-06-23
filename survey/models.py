@@ -267,7 +267,7 @@ class Survey_Individual(models.Model):
     client_survey_over18 = models.OneToOneField(Survey_IndividualExtra, on_delete=models.CASCADE, help_text="The next set of questions asks about sensitive topics. You don’t have to answer any question that you don’t\nwant to however your answers will be combined with the answers of other people who take the survey and\nused to help provide better programs and services to homeless people.", null=True)
 
     def __str__(self):
-        return "PK: {}".format(self.pk)
+        return "ID: {} - Initials: {} - Age: {}".format(self.pk, self.client_survey_initials, self.client_survey_age_exact)
 
 class Survey(models.Model):
     survey_lastnight = models.ForeignKey(LastNight, on_delete=models.CASCADE)
@@ -275,7 +275,7 @@ class Survey(models.Model):
     survey_adults = models.IntegerField(default=0, null=True)
     survey_children = models.IntegerField(default=0, null=True)
     survey_householdnum = models.IntegerField(editable=False, default=0, null=False)
-    survey_client = models.ManyToManyField(Survey_Individual)
+    survey_client = models.ManyToManyField(Survey_Individual, help_text="Hold down \"Control\", or \"Command\" on a Mac, to select more than one.")
     survey_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):

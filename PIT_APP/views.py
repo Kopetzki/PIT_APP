@@ -15,3 +15,8 @@ def login(request):
 
 def resources(request):
     return render(request, 'base/Resources.html')
+
+# User views
+# Landing page after login
+def user1(request):
+    return render(request, 'base/user/user1.html')

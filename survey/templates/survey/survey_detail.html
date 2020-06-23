@@ -1,0 +1,34 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}Survey Detail{% endblock %}
+
+{% block content %}
+    <h2 style="text-align: center">The Survey You Just Submitted</h2>
+
+    <div class="container">
+        <hr>
+
+        <div class="survey">
+            <p><b>Survey Last Night:</b> {{ survey.survey_lastnight }}</p>
+            <p><b>Survey Repeat:</b> {{ survey.survey_repeat|linebreaksbr }}</p>
+
+            <p><b>Survey Adults:</b> {{ survey.survey_adults|linebreaksbr }}</p>
+            <p><b>Survey Children:</b> {{ survey.survey_children|linebreaksbr }}</p>
+            <p><b>Survey Household Num:</b> {{ survey.survey_householdnum|linebreaksbr }}</p>
+            <p><b>Survey Client:</b> {{ survey.survey_client|linebreaksbr }}</p>
+            <p><b>Survey User:</b> {{ survey.survey_user|linebreaksbr }}</p>
+
+        </div>
+
+        <hr>
+        <div class="d-flex justify-content-center" style="padding-top: 20px">
+            <p><b>Would you like to add another survey?</b></p>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/survey/survey_new" class="btn btn-success" role="button">Add Another</a>
+        </div>
+
+    </div>
+{% endblock %}
+
+
