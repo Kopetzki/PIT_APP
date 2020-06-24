@@ -25,6 +25,7 @@ urlpatterns = [
     # User views
     path('login/', views.login, name='login'),
     path('user1/', views.user1, name='user1'),
+    path('register/', views.register, name='register'),
 
     path('survey/', include('survey.urls')),
     path('resources/', views.resources, name='resources'),
