@@ -17,6 +17,7 @@ urlpatterns = [
     # Survey Individual
     path('survey_ind_detail/<int:pk>/', views.survey_ind_detail, name='survey_ind_detail'),
     path('survey_new_ind/', views.survey_individual, name='survey_individual'),
+    path('survey_ind_extra_detail/<int:pk1>/<int:pk2>/', views.survey_ind_extra_detail, name='survey_ind_extra_detail'),
 
     # Survey
     path('survey_detail/<int:pk>/', views.survey_detail, name='survey_detail'),

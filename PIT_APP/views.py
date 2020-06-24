@@ -8,10 +8,10 @@ from django.urls import reverse
 
 # Create your views here.
 def index(request):
-    return render(request, 'base/home.html')
+    return render(request, 'base/home1.html')
 
 def login(request):
-    return render(request, 'base/login.html')
+    return render(request, 'registration/login.html')
 
 def resources(request):
     return render(request, 'base/Resources.html')

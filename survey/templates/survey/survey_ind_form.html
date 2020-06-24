@@ -15,11 +15,17 @@
 
                     {{ form|crispy }}
 
-                    <div class="d-flex justify-content-center">
+                    <hr>
+                    <h4 style="padding-bottom: 15px">Only proceed if the individual is over 18:</h4>
+
+                    {{ form_extra|crispy }}
+
+                <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-        
+                </div>
+            </form>
+
+
         </div>
     
 
