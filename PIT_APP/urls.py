@@ -31,6 +31,4 @@ urlpatterns = [
     path('resources/', views.resources, name='resources'),
     path('admin/', admin.site.urls),
     # will need another admin view for our custom dashboard
-
-    path('accounts/', include('django.contrib.auth.urls')),
 ]
