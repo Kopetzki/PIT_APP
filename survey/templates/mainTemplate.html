@@ -78,6 +78,12 @@
                     <li class="nav-item">
                     <a class="nav-link" href="/user1">User</a>
                   </li>
+                  {% if user.is_authenticated %}
+                  <li>
+                     <li class="nav-item">
+                     <a class="nav-link" href="/logout">Logout</a>
+                  </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>

@@ -24,6 +24,7 @@ urlpatterns = [
 
     # User views
     path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('user1/', views.user1, name='user1'),
     path('register/', views.register, name='register'),
 
@@ -31,6 +32,4 @@ urlpatterns = [
     path('resources/', views.resources, name='resources'),
     path('admin/', admin.site.urls),
     # will need another admin view for our custom dashboard
-
-    path('accounts/', include('django.contrib.auth.urls')),
 ]

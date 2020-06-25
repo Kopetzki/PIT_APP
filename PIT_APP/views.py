@@ -1,12 +1,10 @@
 # Contains the main views of the application
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-from django.utils import timezone
-from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
+from django.contrib import auth
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 
 
 # import the different classes
@@ -26,6 +24,7 @@ def login(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
                 return redirect('user1')
             else:
@@ -35,6 +34,10 @@ def login(request):
     form = AuthenticationForm()
     return render(request, 'base/login.html', context={"form": form})
 
+def logout(request):
+    auth.logout(request)
+    messages.info(request, "You've been logged out.")
+    return redirect('/login')
 
 def resources(request):
     return render(request, 'base/Resources.html')
@@ -42,6 +45,7 @@ def resources(request):
 
 # User views
 # Landing page after login
+@login_required
 def user1(request):
     return render(request, 'base/user/user1.html')
 
@@ -51,7 +55,12 @@ def register(request):
         f = UserCreationForm(request.POST)
         if f.is_valid():
             f.save()
-            messages.success(request, 'Account created successfully')
+            messages.success(request, 'Account created successfully, you can now login.')
+            return redirect('login')
+        else:
+            messages.error(
+                request,
+                'Something is wrong with your username or password, check that they meet the requirements.')
             return redirect('register')
 
     else:

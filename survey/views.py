@@ -1,7 +1,7 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
-from django.utils import timezone
-from django.urls import reverse
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey
@@ -9,16 +9,19 @@ from .forms import Observation_Individual_Form, Observation_Form, Survey_Individ
 
 # Create your views here.
 # the survey index does nothing right now
+@login_required
 def index(request):
     return HttpResponse("Hello, world. You're at the basic survey index.")
 
 # ===================================================================
 # Observation Individual
+@login_required
 def observation_ind_detail(request, pk):
     obser = get_object_or_404(Observation_Individual, pk=pk)
     return render(request, 'observation/observation_ind_detail.html', {'obser': obser})
 
 # Handles the form POST and GET
+@login_required
 def observation_ind_new(request):
     if request.method == "POST":
         form = Observation_Individual_Form(request.POST)
@@ -41,10 +44,12 @@ def observation_ind_new(request):
 # ===================================================================
 # General Observation
 # WIP: Details need to be smoothed out
+@login_required
 def observation_detail(request, pk):
     obser = get_object_or_404(Observation, pk=pk)
     return render(request, 'observation/observation_detail.html', {'obser': obser})
 
+@login_required
 def general_observation(request):
     if request.method == "POST":
         form = Observation_Form(request.POST)
@@ -63,10 +68,12 @@ def general_observation(request):
 
 # ===================================================================
 # Survey Individual
+@login_required
 def survey_ind_detail(request, pk):
     survey = get_object_or_404(Survey_Individual, pk=pk)
     return render(request, 'survey/survey_ind_detail.html', {'survey': survey})
 
+@login_required
 def survey_individual(request):
     if request.method == "POST":
         form = Survey_Individual_Form(request.POST)
@@ -86,11 +93,13 @@ def survey_individual(request):
 # WIP
 
 # Survey General
+@login_required
 def survey_detail(request, pk):
     survey = get_object_or_404(Survey, pk=pk)
     return render(request, 'survey/survey_detail.html', {'survey': survey})
 
 # convert here
+@login_required
 def survey_new(request):
     if request.method == "POST":
         form = Survey_Form(request.POST)
