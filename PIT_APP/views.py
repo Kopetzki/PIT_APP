@@ -47,7 +47,12 @@ def register(request):
         f = UserCreationForm(request.POST)
         if f.is_valid():
             f.save()
-            messages.success(request, 'Account created successfully')
+            messages.success(request, 'Account created successfully, you can now login.')
+            return redirect('login')
+        else:
+            messages.error(
+                request,
+                'Something is wrong with your username or password, check that they meet the requirements.')
             return redirect('register')
 
     else:
