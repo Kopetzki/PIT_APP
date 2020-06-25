@@ -14,13 +14,13 @@
                 <hr>
 
                 <div class="obser">
-                    <p><b>Observation Reason:</b> {{ obser.obs_reason }}</p>
+                    <p><b>Observation Reason:</b> {{ o_reason }}</p>
                     <p><b>Observation # Adults:</b> {{ obser.obs_adults|linebreaksbr }}</p>
                     <p><b>Observation # Children:</b> {{ obser.obs_children|linebreaksbr }}</p>
                     <p><b>Observation Unsure:</b> {{ obser.obs_unsure|linebreaksbr }}</p>
                     <!--Household Num-->
                     <!--User-->
-                    <!--Many to many display: Clients-->
+                    <p><b>Observation Client(s):</b> {{ o_clientList|linebreaksbr }}</p>
                     <p><b>Observation Time:</b> {{ obser.obs_time|linebreaksbr }}</p>
                 </div>
 

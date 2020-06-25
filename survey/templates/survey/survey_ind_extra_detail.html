@@ -18,20 +18,20 @@
             <p><b>Client survey initials:</b> {{ survey.client_survey_initials }}</p>
             <p><b>Client survey relationship:</b> {{ survey.client_survey_relationship|linebreaksbr }}</p>
 
-            <p><b>Client survey hhconfirm:</b> {{ survey.client_survey_hhconfirm|linebreaksbr }}</p>
+            <p><b>Client survey hhconfirm:</b> {{ hhconfirm|linebreaksbr }}</p>
             <p><b>Client survey nonhhlastnight:</b> {{ survey.client_survey_nonhhlastnight|linebreaksbr }}</p>
             <p><b>Client survey age exact:</b> {{ survey.client_survey_age_exact|linebreaksbr }}</p>
             <p><b>Client survey age grouped:</b> {{ survey.client_survey_age_grouped|linebreaksbr }}</p>
-            <p><b>Client survey ethnicity:</b> {{ survey.client_survey_ethnicity|linebreaksbr }}</p>
-            <p><b>Client survey race:</b> {{ survey.client_survey_race|linebreaksbr }}</p>
+            <p><b>Client survey ethnicity:</b> {{ ethnicity|linebreaksbr }}</p>
+            <p><b>Client survey race:</b> {{ raceList|linebreaksbr }}</p>
             <p><b>Client survey race other:</b> {{ survey.client_survey_race_other|linebreaksbr }}</p>
             <p><b>Client survey gender:</b> {{ survey.client_survey_gender|linebreaksbr }}</p>
-            <p><b>Client survey served:</b> {{ survey.client_survey_served|linebreaksbr }}</p>
+            <p><b>Client survey served:</b> {{ served|linebreaksbr }}</p>
 
-            <p><b>Client survey served guard res:</b> {{ survey.client_survey_served_guard_res|linebreaksbr }}</p>
-            <p><b>Client survey served VHA:</b> {{ survey.client_survey_served_VHA|linebreaksbr }}</p>
-            <p><b>Client survey benefits:</b> {{ survey.client_survey_benefits|linebreaksbr }}</p>
-            <p><b>Client survey firsttime:</b> {{ survey.client_surey_firsttime|linebreaksbr }}</p>
+            <p><b>Client survey served guard res:</b> {{ guardRes|linebreaksbr }}</p>
+            <p><b>Client survey served VHA:</b> {{ vha|linebreaksbr }}</p>
+            <p><b>Client survey benefits:</b> {{ benefits|linebreaksbr }}</p>
+            <p><b>Client survey firsttime:</b> {{ firstTime|linebreaksbr }}</p>
             <p><b>Client survey homelesslength:</b> {{ survey.client_survey_homelesslength|linebreaksbr }}</p>
             <p><b>Client survey homelesslength number:</b> {{ survey.client_survey_homelesslength_number|linebreaksbr }}</p>
 
@@ -42,15 +42,15 @@
             <p><b>Client survey over18:</b> {{ survey.client_survey_over18|linebreaksbr }}</p>
 
             <hr>
-            <h4>Extra Information:</h4>
-            <p><b>Client survey substance:</b> {{ survey2.client_survey_substance|linebreaksbr }}</p>
-            <p><b>Client survey mhealth:</b> {{ survey2.client_survey_mhealth|linebreaksbr }}</p>
-            <p><b>Client survey phealth:</b> {{ survey2.client_survey_phealth|linebreaksbr }}</p>
-            <p><b>Client survey stablehousing:</b> {{ survey2client_survey_stablehousing|linebreaksbr }}</p>
-            <p><b>Client survey barriers:</b> {{ survey2.client_survey_barriers|linebreaksbr }}</p>
-            <p><b>Client survey specialed:</b> {{ survey2.client_survey_specialed|linebreaksbr }}</p>
-            <p><b>Client survey HIVAIDS:</b> {{ survey2.client_survey_HIVAIDS|linebreaksbr }}</p>
-            <p><b>Client survey DV:</b> {{ survey2.client_survey_DV|linebreaksbr }}</p>
+            <h4 style="text-align: center">Extra Information</h4>
+            <p><b>Client survey substance:</b> {{ substance|linebreaksbr }}</p>
+            <p><b>Client survey mhealth:</b> {{ mhealth|linebreaksbr }}</p>
+            <p><b>Client survey phealth:</b> {{ phealth|linebreaksbr }}</p>
+            <p><b>Client survey stablehousing:</b> {{ stablehousing|linebreaksbr }}</p>
+            <p><b>Client survey barriers:</b> {{ barriersList|linebreaksbr }}</p>
+            <p><b>Client survey specialed:</b> {{ specialed|linebreaksbr }}</p>
+            <p><b>Client survey HIVAIDS:</b> {{ HIVAIDS|linebreaksbr }}</p>
+            <p><b>Client survey DV:</b> {{ DV|linebreaksbr }}</p>
 
         </div>
 
