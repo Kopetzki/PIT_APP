@@ -34,6 +34,10 @@ def login(request):
     form = AuthenticationForm()
     return render(request, 'base/login.html', context={"form": form})
 
+def logout(request):
+    auth.logout(request)
+    messages.info(request, "You've been logged out.")
+    return redirect('/login')
 
 def resources(request):
     return render(request, 'base/Resources.html')
