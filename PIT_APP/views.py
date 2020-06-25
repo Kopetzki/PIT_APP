@@ -1,8 +1,10 @@
 # Contains the main views of the application
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
+from django.contrib import auth
 from django.contrib.auth import authenticate
+from django.shortcuts import render, redirect
 
 
 # import the different classes
@@ -22,6 +24,7 @@ def login(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
                 return redirect('user1')
             else:
@@ -38,6 +41,7 @@ def resources(request):
 
 # User views
 # Landing page after login
+@login_required
 def user1(request):
     return render(request, 'base/user/user1.html')
 
