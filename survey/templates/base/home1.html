@@ -1,95 +1,16 @@
-<html lang="en">
+{% extends "mainTemplate.html" %}
 
-    <style>
-        html,
-        body,
-        header,
-        .view {
-          height: 100%;
-        }
+{% block title %}Welcome{% endblock %}
 
-        @media (max-width: 740px) {
-          html,
-          body,
-          header,
-          .view {
-            height: 100vh;
-          }
-        }
-
-        .top-nav-collapse {
-          background-color: #78909c !important;
-        }
-
-        .navbar:not(.top-nav-collapse) {
-          background: transparent !important;
-        }
-
-        @media (max-width: 991px) {
-          .navbar:not(.top-nav-collapse) {
-            background: #78909c !important;
-          }
-        }
-
-        h1 {
-          letter-spacing: 8px;
-        }
-
-        h5 {
-          letter-spacing: 3px;
-        }
-
-        .hr-light {
-          border-top: 3px solid #fff;
-          width: 80px;
-        }
-
-    </style>
-
-    <title>Home</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <body style="background-color: rgba(76,125,172,0.63)">
-          <!--Navbar-->
-          <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
-            <div class="container">
-              <a class="navbar-brand" href="#"><strong>P.I.T. Count</strong></a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent-7">
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/resources">Resources</a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/admin">Admin</a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/user1">User</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-          </nav>
-
-
+{% block content %}
           <div class="view" style="background-image: linear-gradient(218deg, rgba(108,214,195,1) 0%, rgba(221,202,245,1) 54%, rgba(110,210,230,1) 100%);  background-size: cover; background-position: center center;">
             <div class="mask rgba-black-light align-items-center">
               <div class="container">
                 <div class="row">
-                  <div class="col-md-12 mb-4 white-text text-center" style="margin-top: 230px;">
+                  <div class="col-md-12 mb-4 white-text text-center" style="margin-top: 240px;">
                       <h1 style="color: aliceblue"><b>WELCOME</b></h1>
-                      <hr class="hr-light my-4 wow fadeInDown" data-wow-delay="0.4s">
-                      <h3 style="color: aliceblue">P.I.T Count</h3>
+                      <hr class="hr-light my-4 wow fadeInDown" >
+                      <h3 style="color: aliceblue">P.I.T. Count</h3>
 
                   </div>
                 </div>
@@ -131,7 +52,5 @@
           </div>
         </main>
 
-
-    </body>
-</html>
+{% endblock %}
 

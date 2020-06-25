@@ -3,28 +3,38 @@
 {% block title %}Observation Detail{% endblock %}
 
 {% block content %}
-    <h2 style="text-align: center">The Observation You Just Submitted</h2>
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
 
-    <div class="container">
-        <hr>
+            <h2 style="text-align: center">The Observation You Just Submitted</h2>
 
-        <div class="obser">
-            <p><b>Observation Reason:</b> {{ obser.obs_reason }}</p>
-            <p><b>Observation # Adults:</b> {{ obser.obs_adults|linebreaksbr }}</p>
-            <p><b>Observation # Children:</b> {{ obser.obs_children|linebreaksbr }}</p>
-            <p><b>Observation Unsure:</b> {{ obser.obs_unsure|linebreaksbr }}</p>
-            <!--Household Num-->
-            <!--User-->
-            <!--Many to many display: Clients-->
-            <p><b>Observation Time:</b> {{ obser.obs_time|linebreaksbr }}</p>
+            <div class="container">
+                <hr>
+
+                <div class="obser">
+                    <p><b>Observation Reason:</b> {{ obser.obs_reason }}</p>
+                    <p><b>Observation # Adults:</b> {{ obser.obs_adults|linebreaksbr }}</p>
+                    <p><b>Observation # Children:</b> {{ obser.obs_children|linebreaksbr }}</p>
+                    <p><b>Observation Unsure:</b> {{ obser.obs_unsure|linebreaksbr }}</p>
+                    <!--Household Num-->
+                    <!--User-->
+                    <!--Many to many display: Clients-->
+                    <p><b>Observation Time:</b> {{ obser.obs_time|linebreaksbr }}</p>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-center" style="padding-top: 20px">
+                    <p><b>Would you like to add another observation?</b></p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="/survey/observation_new" class="btn btn-success" role="button">Add Observation</a>
+                </div>
+            </div>
+
+    </div>
         </div>
-
-        <hr>
-        <div class="d-flex justify-content-center" style="padding-top: 20px">
-            <p><b>Would you like to add another observation?</b></p>
-        </div>
-        <div class="d-flex justify-content-center">
-            <a href="/survey/observation_new" class="btn btn-success" role="button">Add Observation</a>
         </div>
     </div>
 {% endblock %}
