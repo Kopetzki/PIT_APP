@@ -1,6 +1,11 @@
 # PIT App
 
-Django app.
+Django app with web forms to assist with collection of data for Point-in-Time (PIT) counts for the Annual Homeless Assessment Report (AHAR) to the U.S. Congress. You can view these anual reports at:
+https://www.hudexchange.info/homelessness-assistance/ahar
+
+Examples PDFs of the forms:
+ - Intervew: https://files.hudexchange.info/resources/documents/Model-Interview-Based-Unsheltered-Night-of-Count-PIT-Survey.pdf
+ - Observation: https://files.hudexchange.info/resources/documents/Model-Observation-Based-Unsheltered-Night-of-Count-PIT-Survey.pdf 
 
 ## Running Locally
 The app can be run locally using `docker` and `docker-compose`.
