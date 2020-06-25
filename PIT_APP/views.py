@@ -1,12 +1,8 @@
 # Contains the main views of the application
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-from django.utils import timezone
-from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 
 
 # import the different classes
