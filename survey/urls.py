@@ -10,7 +10,7 @@ urlpatterns = [
     path('observation_ind_new/', views.observation_ind_new, name='observation_ind_new'),
     path('observation_ind_detail/<int:pk>/', views.observation_ind_detail, name='observation_ind_detail'),
 
-    # WIP: General Observations
+    # General Observations
     path('observation_new/', views.general_observation, name='general_observation'),
     path('observation_detail/<int:pk>/', views.observation_detail, name='observation_detail'),
 

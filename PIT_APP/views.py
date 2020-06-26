@@ -8,13 +8,9 @@ from django.shortcuts import render, redirect
 
 
 # import the different classes
-
 # Create your views here.
-
-
 def index(request):
-    return render(request, 'base/home.html')
-
+    return render(request, 'base/home1.html')
 
 def login(request):
     if request.method == 'POST':
@@ -32,7 +28,7 @@ def login(request):
         else:
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
-    return render(request, 'base/login.html', context={"form": form})
+    return render(request, 'registration/login.html', context={"form": form})
 
 def logout(request):
     auth.logout(request)
@@ -66,4 +62,4 @@ def register(request):
     else:
         f = UserCreationForm()
 
-    return render(request, 'base/register.html', {'form': f})
+    return render(request, 'registration/register.html', {'form': f})
