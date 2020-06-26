@@ -9,10 +9,6 @@ from django.urls import reverse
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
 
-# TO DO:
-# Once the login is working, assign the author field to the user name of the current session
-# Need to work on conditional formatting
-
 # Create your views here.
 # the survey index does nothing right now
 @login_required
@@ -180,10 +176,9 @@ def survey_individual(request):
                 # assign the extra information to "client_survey_over18" variable
                 surv.client_survey_over18 = surv_extra
 
-                print('race:', surv.race_list)
-
                 # now save the completed form
                 surv.save()
+                form.save_m2m() # for many to many fields, must save when commit=False is invoked
 
                 return redirect('survey_ind_extra_detail', pk1=surv.pk, pk2=surv_extra.pk)
 
@@ -191,6 +186,7 @@ def survey_individual(request):
         else:
             if form.is_valid():
                 surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+                form.save_m2m()
 
                 return redirect('survey_ind_detail', pk=surv.pk)
 
