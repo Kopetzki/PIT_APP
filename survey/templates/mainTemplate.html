@@ -25,20 +25,6 @@
           background: transparent !important;
         }
 
-        @media (max-width: 991px) {
-          .navbar:not(.top-nav-collapse) {
-            background: #78909c !important;
-          }
-        }
-
-        h1 {
-          letter-spacing: 8px;
-        }
-
-        h5 {
-          letter-spacing: 3px;
-        }
-
         .hr-light {
           border-top: 3px solid #fff;
           width: 80px;
@@ -75,9 +61,11 @@
                     <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                   </li>
+                  {% if user.is_authenticated %}
                     <li class="nav-item">
                     <a class="nav-link" href="/user1">User</a>
                   </li>
+                  {% endif %}
                   {% if user.is_authenticated %}
                   <li>
                      <li class="nav-item">
@@ -91,20 +79,25 @@
           </nav>
 
 
+          <!----
     <div class="container-fluid">
-        <div style="padding-top: 100px; padding-left: 70px">
+        <div style="padding-top: 100px; padding-left: 10px">
         <div class="card">
             <div class="card-body">
+             --->
 
           {% block content %}
 
 
           {% endblock %}
 
+          <!----
             </div>
         </div>
         </div>
     </div>
+
+    --->
 
 
     </body>

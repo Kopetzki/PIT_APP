@@ -1,0 +1,48 @@
+{% extends "mainTemplate.html" %}
+ 
+{% block title %}
+    Create User
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <div class="row justify-content-md-center">
+                 <div class="login">
+                     {% if messages %}
+                        <ul>
+                        <div class="alert alert-primary" role="alert">
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </div>
+                        </ul>
+                    {% endif %}
+
+                    <h2 style="text-align: center">Register</h2>
+
+                    <div class="row justify-content-md-center">
+                         <form method="post" >
+                             {% csrf_token %}
+                                {{ form|crispy }}
+                             <div class="row justify-content-md-center">
+                                <button class="btn btn-primary" type="submit" name="submit" value="Register" >Register</button>
+                             </div>
+                         </form>
+                    </div>
+                 </div>
+            </div>
+            </div>
+
+            </div>
+        </div>
+        </div>
+    </div>
+ 
+{% endblock %}

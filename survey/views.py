@@ -2,10 +2,16 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
+from django.utils import timezone
+from django.urls import reverse
 
 # import the different classes
-from .models import Observation_Individual, Observation, Survey_Individual, Survey
-from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Form
+from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
+from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
+
+# TO DO:
+# Once the login is working, assign the author field to the user name of the current session
+# Need to work on conditional formatting
 
 # Create your views here.
 # the survey index does nothing right now
@@ -18,7 +24,15 @@ def index(request):
 @login_required
 def observation_ind_detail(request, pk):
     obser = get_object_or_404(Observation_Individual, pk=pk)
-    return render(request, 'observation/observation_ind_detail.html', {'obser': obser})
+
+    # get the special details of the form that requires more parsing
+    raceList = obser.race_list
+
+    # compact into dict
+    data = {}
+    data.update({'obser': obser, 'raceList': raceList})
+
+    return render(request, 'observation/observation_ind_detail.html', data)
 
 # Handles the form POST and GET
 @login_required
@@ -47,7 +61,16 @@ def observation_ind_new(request):
 @login_required
 def observation_detail(request, pk):
     obser = get_object_or_404(Observation, pk=pk)
-    return render(request, 'observation/observation_detail.html', {'obser': obser})
+
+    # get the special details of the form that requires more parsing
+    o_reason = obser.get_obs_reason_display()
+    o_clientList = obser.clients_list()
+
+    # compact into dict
+    data = {}
+    data.update({'obser': obser, 'o_reason': o_reason, 'o_clientList': o_clientList})
+
+    return render(request, 'observation/observation_detail.html', data)
 
 @login_required
 def general_observation(request):
@@ -71,27 +94,120 @@ def general_observation(request):
 @login_required
 def survey_ind_detail(request, pk):
     survey = get_object_or_404(Survey_Individual, pk=pk)
-    return render(request, 'survey/survey_ind_detail.html', {'survey': survey})
+    # get the special details of the form that requires more parsing
+    raceList = survey.race_list()
+
+    # Yes/No
+    # Many to many
+    hhconfirm = survey.get_client_survey_hhconfirm_display()
+    ethnicity = survey.get_client_survey_ethnicity_display()
+    served = survey.get_client_survey_served_display()
+    guardRes = survey.get_client_survey_served_guard_res_display()
+    vha = survey.get_client_survey_served_VHA_display()
+    benefits = survey.get_client_survey_benefits_display()
+    firstTime = survey.get_client_surey_firsttime_display() #misspelled
+
+    # compact into dict
+    data = {}
+    data.update({'survey': survey, 'raceList': raceList, 'hhconfirm': hhconfirm, 'ethnicity':ethnicity,
+                 'guardRes':guardRes, 'vha':vha, 'benefits':benefits,
+                 'served':served, 'firstTime':firstTime})
+
+    return render(request, 'survey/survey_ind_detail.html', data)
+
+def survey_ind_extra_detail(request, pk1 ,pk2):
+    survey1 = get_object_or_404(Survey_Individual, pk=pk1)
+    survey2 = get_object_or_404(Survey_IndividualExtra, pk=pk2)
+
+    # get the special details of the form that requires more parsing
+    # Many to many
+    raceList = survey1.race_list()
+    barriersList = survey2.barriers_list()
+
+    # Yes/No
+    hhconfirm = survey1.get_client_survey_hhconfirm_display()
+    ethnicity = survey1.get_client_survey_ethnicity_display()
+    served = survey1.get_client_survey_served_display()
+    guardRes = survey1.get_client_survey_served_guard_res_display()
+    vha = survey1.get_client_survey_served_VHA_display()
+    benefits = survey1.get_client_survey_benefits_display()
+    firstTime = survey1.get_client_surey_firsttime_display() #misspelled
+
+    substance = survey2.get_client_survey_substance_display()
+    mhealth = survey2.get_client_survey_mhealth_display()
+    phealth = survey2.get_client_survey_phealth_display()
+    stablehousing = survey2.get_client_survey_stablehousing_display()
+    specialed = survey2.get_client_survey_specialed_display()
+    HIVAIDS = survey2.get_client_survey_HIVAIDS_display()
+    DV = survey2.get_client_survey_DV_display()
+
+    # pack two surveys and data into a dictionary
+    surveys = {}
+    surveys.update({'survey': survey1, 'survey2': survey2, 'raceList':raceList, 'barriersList':barriersList,
+                    'hhconfirm': hhconfirm, 'stablehousing':stablehousing, 'guardRes':guardRes, 'vha':vha,
+                    'benefits':benefits,
+                    'ethnicity':ethnicity, 'served':served, 'firstTime':firstTime, 'substance':substance,
+                    'mhealth':mhealth, 'phealth':phealth, 'specialed':specialed, 'HIVAIDS':HIVAIDS, 'DV':DV})
+
+    return render(request, 'survey/survey_ind_extra_detail.html', surveys)
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# Survey Extra
+# Needs to extend off the Individual survey above
 
 @login_required
 def survey_individual(request):
-    if request.method == "POST":
+    if request.POST:
         form = Survey_Individual_Form(request.POST)
-        if form.is_valid():
-            surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
 
-            return redirect('survey_ind_detail', pk=surv.pk)
+        #get age
+        if form.is_valid():
+            surv = form.save(commit=False)
+            tempAge = surv.client_survey_age_exact
+            print('tempAge:', tempAge)
+
+
+        # client is over 18
+        if tempAge >= 18:
+            form_extra = Survey_Individual_Extra_Form(request.POST)
+
+            if all([form.is_valid(), form_extra.is_valid()]):
+                surv_extra = form_extra.save()
+
+                # delay saving the individual form
+                surv = form.save(commit=False)
+
+                # assign the extra information to "client_survey_over18" variable
+                surv.client_survey_over18 = surv_extra
+
+                print('race:', surv.race_list)
+
+                # now save the completed form
+                surv.save()
+
+                return redirect('survey_ind_extra_detail', pk1=surv.pk, pk2=surv_extra.pk)
+
+        # client is younger than 18
+        else:
+            if form.is_valid():
+                surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+
+                return redirect('survey_ind_detail', pk=surv.pk)
+
+
     else:
         # default w/o POST request: render the forms
-        # will need an Observation form
         form = Survey_Individual_Form()
-    return render(request, 'survey/survey_ind_form.html', {'form': form})
+        form_extra = Survey_Individual_Extra_Form()
 
-# Need to work on conditional formatting
-# Survey Extra
-# Needs to extend off the Individual survey above
-# WIP
+        # pack two forms into a dictionary
+        forms = {}
+        forms.update({'form': form, 'form_extra': form_extra})
 
+    return render(request, 'survey/survey_ind_form.html', forms)
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Survey General
 @login_required
 def survey_detail(request, pk):
