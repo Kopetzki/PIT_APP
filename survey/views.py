@@ -186,6 +186,7 @@ def survey_individual(request):
         else:
             if form.is_valid():
                 surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+                form.save_m2m()
 
                 return redirect('survey_ind_detail', pk=surv.pk)
 
