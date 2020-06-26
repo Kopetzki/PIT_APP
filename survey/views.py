@@ -180,10 +180,9 @@ def survey_individual(request):
                 # assign the extra information to "client_survey_over18" variable
                 surv.client_survey_over18 = surv_extra
 
-                print('race:', surv.race_list)
-
                 # now save the completed form
                 surv.save()
+                form.save_m2m() # for many to many fields, must save when commit=False is invoked
 
                 return redirect('survey_ind_extra_detail', pk1=surv.pk, pk2=surv_extra.pk)
 
