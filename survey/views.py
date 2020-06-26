@@ -9,10 +9,6 @@ from django.urls import reverse
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
 
-# TO DO:
-# Once the login is working, assign the author field to the user name of the current session
-# Need to work on conditional formatting
-
 # Create your views here.
 # the survey index does nothing right now
 @login_required
