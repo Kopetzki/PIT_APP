@@ -10,9 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='Post',
-        ),
         migrations.AlterField(
             model_name='observation_individual',
             name='client_race',

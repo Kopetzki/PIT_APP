@@ -8,6 +8,10 @@ from .models import Observation_Individual, Observation
 from .forms import Observation_Individual_Form, Observation_Form
 
 # Create your views here.
+
+
+def dashboard(requests):
+    return render(requests, 'survey/dashboard.html')
 # the survey index does nothing right now
 def index(request):
     return HttpResponse("Hello, world. You're at the basic survey index.")

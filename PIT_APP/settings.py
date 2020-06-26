@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'survey.apps.SurveyConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    #for dashboard
+    'channels_redis',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]
 
 MIDDLEWARE = [
@@ -79,12 +83,12 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': int(os.getenv('DATABASE_PORT')),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres_admin',
+        'PASSWORD': 'adminadmin',
+        'HOST': 'database-pit-app.cxr6c5y7akrw.us-east-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -129,3 +133,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+#for dashboard
+ASGI_APPLICATION = 'PIT_APP.routing.applications'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+CHANNEL_LAYERS = {
+    'default' : {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG' : {
+            'hosts' : [('localhost', 6379),],
+        }
+    }
+}
+
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+
+    'dpd_components'
+]
