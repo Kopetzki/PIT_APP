@@ -4,7 +4,7 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 from django_plotly_dash import DjangoDash
 from django.db.models import Count
-from survey.models import Observation, Observation_Individual
+from survey.models import Observation, Observation_Individual, Age
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -14,6 +14,7 @@ config = {'displayModeBar': False}
 
 
 def pop_count_graph():
+    #graph that counts households + individuals
     figure = {
         'data': [
             {'x': ['Groups', 'Individuals'],
@@ -32,12 +33,20 @@ def pop_count_graph():
     return figure
 
 def age_graph():
+    #simple pie chart for age groups
+    age_lookup = {
+        1: "Under 18",
+        2: "18 - 24",
+        3: "25+",
+        4: "Not Sure"}
+
     data_group = Observation_Individual.objects.all().values('client_age').annotate(dcount=Count('client_age'))
     data_values = []
     data_annotations = []
     for x in data_group:
         data_values.append(list(x.values())[1])
-        data_annotations.append(list(x.values())[0])
+        y = list(x.values())[0]
+        data_annotations.append(age_lookup[y])
     figure = {
               "data": [
                 {
@@ -60,12 +69,19 @@ def age_graph():
     return figure
 
 def gender_graph():
+    #simple gender breakdown
+    gender_lookup = {
+        1: "Male",
+        2: "Female",
+        3: "Not Sure",
+    }
     data_group = Observation_Individual.objects.all().values('client_gender').annotate(dcount=Count('client_gender'))
     data_values = []
     data_annotations = []
     for x in data_group:
         data_values.append(list(x.values())[1])
-        data_annotations.append(list(x.values())[0])
+        y = list(x.values())[0]
+        data_annotations.append(gender_lookup[y])
     figure = {
               "data": [
                 {
@@ -88,12 +104,24 @@ def gender_graph():
     return figure
 
 def race_graph():
+    #pie chart for race
+    race_lookup = {
+        1: "American Indian or Alaska Native",
+        2: "Asian",
+        3: "Black or African American",
+        4: "Native Hawaiian or Other Pacific Islander",
+        5: "White",
+        6: "Other",
+        7: "Not Sure"
+         }
+
     data_group = Observation_Individual.objects.all().values('client_race').annotate(dcount=Count('client_race'))
     data_values = []
     data_annotations = []
     for x in data_group:
         data_values.append(list(x.values())[1])
-        data_annotations.append(list(x.values())[0])
+        y = list(x.values())[0]
+        data_annotations.append(race_lookup[y])
     figure = {
               "data": [
                 {
