@@ -22,12 +22,18 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
 
+    # User views
     path('login/', views.login, name='login'),
-    path('resources/', views.resources, name='resources'),
+    path('logout/', views.logout, name='logout'),
+    path('user1/', views.user1, name='user1'),
+    path('register/', views.register, name='register'),
 
     path('survey/', include('survey.urls')),
+    path('resources/', views.resources, name='resources'),
     path('admin/', admin.site.urls),
 
     #for dashboard
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
 ]
+
+    # will need another admin view for our custom dashboard

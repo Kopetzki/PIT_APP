@@ -201,6 +201,14 @@ class Observation_Individual(models.Model):
     def __str__(self):
         return "ID: {} - ({}, {}, {})".format(self.pk, self.client_gender, self.client_age, self.calc_race())
 
+    # client information
+    def get_client(self):
+        return "Client ID: {} - ({}, {}, {})".format(self.pk, self.client_gender, self.client_age, self.calc_race())
+
+    # for query display results
+    def race_list(self):
+        return ', '.join([ind.get_race_display() for ind in self.client_race.all()])
+
 
 class Observation(models.Model):
     STATUS = (
@@ -225,6 +233,10 @@ class Observation(models.Model):
     def __str__(self):
         return "ID: {} - Number in Household: {} - User: {}".format(self.pk, self.obs_householdnum, self.obs_user)
 
+    # for query display results
+    def clients_list(self):
+        return ', '.join([ind.get_client() for ind in self.obs_client.all()])
+
 #Only completed along Survey_Individual if the individual of the household is older than 18
 class Survey_IndividualExtra(models.Model):
     client_survey_substance = models.IntegerField(choices=YesNoChoices(), help_text="Do you drink alcoholic beverages or use drugs\n(illegal or prescription for nonmedical reasons)?\n[IF NECESSARY: non-medical reasons means because of the experience or feeling the drug caused.]")
@@ -237,6 +249,10 @@ class Survey_IndividualExtra(models.Model):
     client_survey_specialed = models.IntegerField(choices=YesNoChoices(), help_text="Have you ever received special education (or special ed.) services for an extended period of time?")
     client_survey_HIVAIDS = models.IntegerField(choices=YesNoChoices(), help_text="Do you have AIDS or an HIV-related illness?")
     client_survey_DV = models.IntegerField(choices=YesNoChoices(), help_text="Are you experiencing homelessness because you are currently fleeing domestic violence, dating violence, sexual assault, or stalking?")
+
+    # for query display results
+    def barriers_list(self):
+        return ', '.join([ind.get_barriers_display() for ind in self.client_survey_barriers.all()])
 
 
 class Survey_Individual(models.Model):
@@ -267,7 +283,12 @@ class Survey_Individual(models.Model):
     client_survey_over18 = models.OneToOneField(Survey_IndividualExtra, on_delete=models.CASCADE, help_text="The next set of questions asks about sensitive topics. You don’t have to answer any question that you don’t\nwant to however your answers will be combined with the answers of other people who take the survey and\nused to help provide better programs and services to homeless people.", null=True)
 
     def __str__(self):
-        return "PK: {}".format(self.pk)
+        return "ID: {} - Initials: {} - Age: {}".format(self.pk, self.client_survey_initials, self.client_survey_age_exact)
+
+    # for query display results
+    def race_list(self):
+        return ', '.join([ind.get_race_display() for ind in self.client_survey_race.all()])
+
 
 class Survey(models.Model):
     survey_lastnight = models.ForeignKey(LastNight, on_delete=models.CASCADE)
@@ -275,7 +296,7 @@ class Survey(models.Model):
     survey_adults = models.IntegerField(default=0, null=True)
     survey_children = models.IntegerField(default=0, null=True)
     survey_householdnum = models.IntegerField(editable=False, default=0, null=False)
-    survey_client = models.ManyToManyField(Survey_Individual)
+    survey_client = models.ManyToManyField(Survey_Individual, help_text="Hold down \"Control\", or \"Command\" on a Mac, to select more than one.")
     survey_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):

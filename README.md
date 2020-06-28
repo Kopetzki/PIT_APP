@@ -1,6 +1,11 @@
 # PIT App
 
-Django app.
+Django app with web forms to assist with the collection of data for Point-in-Time (PIT) counts for the Annual Homeless Assessment Report (AHAR) sent to the U.S. Congress. You can view these annual reports at:
+https://www.hudexchange.info/homelessness-assistance/ahar
+
+Examples PDFs of the forms:
+ - Intervew: https://files.hudexchange.info/resources/documents/Model-Interview-Based-Unsheltered-Night-of-Count-PIT-Survey.pdf
+ - Observation: https://files.hudexchange.info/resources/documents/Model-Observation-Based-Unsheltered-Night-of-Count-PIT-Survey.pdf 
 
 ## Running Locally
 The app can be run locally using `docker` and `docker-compose`.
@@ -11,7 +16,7 @@ There are instructions on how to install `docker`
 Once `docker-compose` is installed you
 can run the app using the following commands:
  
- `docker-compose build && docker-compose up`
+ `docker-compose up --build`
 
 This will rebuild the docker images to the latest versions, bring
 up a postgres database locally, run Django migration scripts on that
@@ -31,5 +36,10 @@ database:
  - `DATABASE_PASSWORD`
  - `DATABASE_HOST`
  - `DATABASE_PORT` 
+ 
+ You can set these all in a single command like so, replacing `XXX`
+ with the correct value for your database:
+ 
+`DATABASE_NAME=XXX DATABASE_USER=XXX DATABASE_PASSWORD=XXX DATABASE_HOST=XXX DATABASE_PORT=XXX python3 manage.py runserver`
 
 

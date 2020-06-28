@@ -1,0 +1,37 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}Survey{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">Survey</h2>
+
+                <div class="container">
+                    <hr>
+
+                    <form method="POST" class="post-form">
+                            {% csrf_token %}
+
+                            {{ form|crispy }}
+
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                </div>
+    
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

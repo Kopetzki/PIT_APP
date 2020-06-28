@@ -1,0 +1,61 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}New Observation Individual{% endblock %}
+<!--Will want to link this to the main page once the user is logged in-->
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">New Individual Observation</h2>
+
+            <div class="container">
+                <hr>
+                    <form method="POST" class="post-form">
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_location|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_homeless|as_crispy_field }}
+                          </div>
+                        </div>
+
+                        <div class="form-row">
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_age|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_gender|as_crispy_field }}
+                          </div>
+                        </div>
+
+                        <div class="form-row">
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_race|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.client_ethnicity|as_crispy_field }}
+                          </div>
+                        </div>
+
+                        {{ form.client_information|as_crispy_field }}
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+            </div>
+
+
+    </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
