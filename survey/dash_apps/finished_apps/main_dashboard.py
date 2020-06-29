@@ -143,35 +143,37 @@ def race_graph():
             }
     return figure
 
+def layout():
+    return html.Div(children=[
+        html.Div(children=[
+            html.Div([dcc.Graph(
+                id='groups-individuals',
+                figure=pop_count_graph(),
+                config=config
+            )],
+                style={'display': 'inline-block', 'width': '49%'}),
 
-app.layout = html.Div(children=[
-    html.Div(children=[
-        html.Div([dcc.Graph(
-            id='groups-individuals',
-            figure=pop_count_graph(),
-            config=config
-        )],
-            style={'display': 'inline-block', 'width': '49%'}),
+            html.Div([dcc.Graph(
+                id='age-groups',
+                figure=age_graph(),
+                config=config)
+            ], style={'display': 'inline-block', 'width': '49%'})
+        ], className='row'),
 
-        html.Div([dcc.Graph(
-            id='age-groups',
-            figure=age_graph(),
-            config=config)
-        ], style={'display': 'inline-block', 'width': '49%'})
-    ], className='row'),
+        html.Div(children=[
+            html.Div([dcc.Graph(
+                id='gender-groups',
+                figure=gender_graph(),
+                config=config
+            )],
+                style={'display': 'inline-block', 'width': '49%'}),
 
-    html.Div(children=[
-        html.Div([dcc.Graph(
-            id='gender-groups',
-            figure=gender_graph(),
-            config=config
-        )],
-            style={'display': 'inline-block', 'width': '49%'}),
+            html.Div([dcc.Graph(
+                id='race-groups',
+                figure=race_graph(),
+                config=config)
+            ], style={'display': 'inline-block', 'width': '49%'})
+        ], className='row')
+    ])
 
-        html.Div([dcc.Graph(
-            id='race-groups',
-            figure=race_graph(),
-            config=config)
-        ], style={'display': 'inline-block', 'width': '49%'})
-    ], className='row')
-])
+app.layout = layout
