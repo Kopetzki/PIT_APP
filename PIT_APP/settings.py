@@ -84,14 +84,21 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE'),
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': int(os.getenv('DATABASE_PORT')),
+
     }
 }
 
+if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
+    if os.getenv('DATABASE_NAME') is None:
+        DATABASES['default']['NAME'] = os.path.join(BASE_DIR, 'db.sqlite3')
+    else:
+        DATABASES['default']['NAME'] = os.getenv('DATABASE_NAME')
+else:
+    DATABASES['default']['NAME'] = os.getenv('DATABASE_NAME')
+    DATABASES['default']['USER'] = os.getenv('DATABASE_USER')
+    DATABASES['default']['PASSWORD'] = os.getenv('DATABASE_PASSWORD')
+    DATABASES['default']['HOST'] = os.getenv('DATABASE_HOST')
+    DATABASES['default']['PORT'] = int(os.getenv('DATABASE_PORT'))
 
 
 # Password validation

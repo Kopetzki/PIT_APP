@@ -44,6 +44,7 @@ def age_graph():
     data_values = []
     data_annotations = []
     for x in data_group:
+        print(x)
         data_values.append(list(x.values())[1])
         y = list(x.values())[0]
         data_annotations.append(age_lookup[y])
