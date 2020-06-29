@@ -1,9 +1,0 @@
-{% extends "mainTemplate.html" %}
-
-{% block content %}
-    {% load plotly_dash %}
-<h1>Dashboard</h1>
-    <div class="{% plotly_class name='main_dash' %} card" style= "height:100%;width: 100%">
-    {% plotly_app name='main_dash' ratio=0.65 %}
-    </div>
-{% endblock %}

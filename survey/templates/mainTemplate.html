@@ -54,27 +54,30 @@
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                   </li>
 
-                  <li class="nav-item">
-                    <a class="nav-link" href="/survey/observation_ind_new/">Add Individuals</a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/survey/observation_new/">Add Observation</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/survey/dashboard/">Data Dashboard</a>
                   </li>
 
+                {% if user.is_authenticated %}
                     <li class="nav-item">
+                    <a class="nav-link" href="/user1">User Dashboard</a>
+                  </li>
+               {% endif %}
+
+               <li class="nav-item">
                     <a class="nav-link" href="/resources">Resources</a>
-                  </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/survey/dashboard/">Dashboard</a>
-                  </li>
+               </li>
+
+                {% if user.is_authenticated %}
                     <li class="nav-item">
                     <a class="nav-link" href="/admin">Admin</a>
                   </li>
+                {% endif %}
+
                 {% if user.is_authenticated == False %}
                     <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                   </li>
-
                 {% endif %}
 
                 {% if user.is_authenticated == False %}
@@ -83,11 +86,7 @@
                   </li>
                 {% endif %}
 
-                  {% if user.is_authenticated %}
-                    <li class="nav-item">
-                    <a class="nav-link" href="/user1">User</a>
-                  </li>
-                  {% endif %}
+
 
                   {% if user.is_authenticated %}
                   <li>

@@ -17,7 +17,7 @@ urlpatterns = [
 
 
     # dashboard for graphs
-    path('dashboard/', views.dashboard, name="dashboard")
+    path('dashboard/', views.dashboard, name="dashboard"),
 
     # Survey Individual
     path('survey_ind_detail/<int:pk>/', views.survey_ind_detail, name='survey_ind_detail'),
