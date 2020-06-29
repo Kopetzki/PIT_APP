@@ -16,14 +16,12 @@
             <div class="row justify-content-md-center">
                  <div class="login">
                      {% if messages %}
-                        <ul>
                         <div class="alert alert-primary" role="alert">
                             {% for message in messages %}
-                            <li>{{ message }}</li>
+                            <p>{{ message }}</p>
                             {% endfor %}
                         </div>
-                        </ul>
-                    {% endif %}
+                     {% endif %}
 
                     <h2 style="text-align: center">Register</h2>
 

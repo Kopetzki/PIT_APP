@@ -1,4 +1,5 @@
 #from survey.models import Ethnicity, Age, Homeless, Gender, Race
+from survey import models
 from survey.models import LastNight, YesNoDK, Relationship, GenderDetailed, HomelessLength, TimesHomeless, Barriers
 
 '''def create_tables():
@@ -14,18 +15,18 @@ from survey.models import LastNight, YesNoDK, Relationship, GenderDetailed, Home
         Race.objects.create(race=k[0])'''
 
 def create_tables2():
-    for x in LastNight.STATUS:
+    for x in models.LAST_NIGHT_CHOICES:
         LastNight.objects.create(lastnight=x[0])
-    for y in YesNoDK.STATUS:
+    for y in models.YES_NO_DK_CHOICES:
         YesNoDK.objects.create(yesnodk=y[0])
-    for z in Relationship.STATUS:
+    for z in models.RELATIONSHIP_CHOICES:
         Relationship.objects.create(relationship=z[0])
-    for w in GenderDetailed.STATUS:
+    for w in models.GENDER_DETAILED_CHOICES:
         GenderDetailed.objects.create(genderdetailed=w[0])
-    for k in HomelessLength.STATUS:
+    for k in models.HOMELESS_LENGTH_CHOICES:
         HomelessLength.objects.create(homelesslength=k[0])
-    for m in TimesHomeless.STATUS:
+    for m in models.TIMES_HOMELESS_CHOICE:
         TimesHomeless.objects.create(timeshomeless=m[0])
-    for n in Barriers.STATUS:
+    for n in models.BARRIERS_CHOICES:
         Barriers.objects.create(barriers=n[0])
 

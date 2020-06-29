@@ -83,15 +83,22 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres_admin',
-        'PASSWORD': 'adminadmin',
-        'HOST': 'database-pit-app.cxr6c5y7akrw.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+
     }
 }
 
+if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
+    if os.getenv('DATABASE_NAME') is None:
+        DATABASES['default']['NAME'] = os.path.join(BASE_DIR, 'db.sqlite3')
+    else:
+        DATABASES['default']['NAME'] = os.getenv('DATABASE_NAME')
+else:
+    DATABASES['default']['NAME'] = os.getenv('DATABASE_NAME')
+    DATABASES['default']['USER'] = os.getenv('DATABASE_USER')
+    DATABASES['default']['PASSWORD'] = os.getenv('DATABASE_PASSWORD')
+    DATABASES['default']['HOST'] = os.getenv('DATABASE_HOST')
+    DATABASES['default']['PORT'] = int(os.getenv('DATABASE_PORT'))
 
 
 # Password validation
