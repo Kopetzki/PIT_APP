@@ -10,6 +10,11 @@ from .models import Observation_Individual, Observation, Survey_Individual, Surv
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
 
 # Create your views here.
+
+# Data dashboard
+def dashboard(requests):
+    return render(requests, 'data_dashboard/dashboard.html')
+
 # the survey index does nothing right now
 @login_required
 def index(request):

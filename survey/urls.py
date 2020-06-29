@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from survey.dash_apps.finished_apps import main_dashboard
 
 urlpatterns = [
     # Doesn't do anything now
@@ -14,6 +15,10 @@ urlpatterns = [
     path('observation_new/', views.general_observation, name='general_observation'),
     path('observation_detail/<int:pk>/', views.observation_detail, name='observation_detail'),
 
+
+    # dashboard for graphs
+    path('dashboard/', views.dashboard, name="dashboard"),
+
     # Survey Individual
     path('survey_ind_detail/<int:pk>/', views.survey_ind_detail, name='survey_ind_detail'),
     path('survey_new_ind/', views.survey_individual, name='survey_individual'),
@@ -22,4 +27,5 @@ urlpatterns = [
     # Survey
     path('survey_detail/<int:pk>/', views.survey_detail, name='survey_detail'),
     path('survey_new/', views.survey_new, name='survey_new'),
+
 ]
