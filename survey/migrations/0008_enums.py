@@ -48,7 +48,7 @@ def reverse(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('survey', '0006_auto_20200616_1856'),
+        ('survey', '0007_auto_20200623_1734'),
     ]
 
     operations = [
