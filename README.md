@@ -31,6 +31,7 @@ database is configured to use a database brought up when run through
 when running through any other environment to point to the proper
 database:
 
+ - `DATABASE_ENGINE`
  - `DATABASE_NAME`
  - `DATABASE_USER`
  - `DATABASE_PASSWORD`
@@ -40,6 +41,6 @@ database:
  You can set these all in a single command like so, replacing `XXX`
  with the correct value for your database:
  
-`DATABASE_NAME=XXX DATABASE_USER=XXX DATABASE_PASSWORD=XXX DATABASE_HOST=XXX DATABASE_PORT=XXX python3 manage.py runserver`
+`DATABASE_ENGINE=XXX DATABASE_NAME=XXX DATABASE_USER=XXX DATABASE_PASSWORD=XXX DATABASE_HOST=XXX DATABASE_PORT=XXX python3 manage.py runserver`
 
 
