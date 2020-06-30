@@ -13,27 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
 
-from . import views
-
-
 urlpatterns = [
-    path('', views.index, name='index'),
-
-    # User views
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
-    path('user1/', views.user1, name='user1'),
-    path('register/', views.register, name='register'),
-
-    path('survey/', include('survey.urls')),
-    path('resources/', views.resources, name='resources'),
-    path('admin/', admin.site.urls),
-
-    #for dashboard
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    path('', include('survey.urls')),
 ]
 
-    # will need another admin view for our custom dashboard
