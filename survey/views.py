@@ -238,7 +238,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('user1')
+                return redirect('user')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -258,7 +258,7 @@ def resources(request):
 # User views
 # Landing page after login
 @login_required
-def user1(request):
+def user(request):
     return render(request, 'base/user/user1.html')
 
 
