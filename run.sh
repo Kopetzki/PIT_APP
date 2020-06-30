@@ -1,4 +1,5 @@
 #!/bin/bash
 
-pip3 install django-pit-survey --upgrade
-python3 run.py
+pip3 install django-pit-survey -U
+pit_init
+pit_run
