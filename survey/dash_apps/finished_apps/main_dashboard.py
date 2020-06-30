@@ -1,10 +1,8 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
 from django_plotly_dash import DjangoDash
 from django.db.models import Count
-from survey.models import Observation, Observation_Individual, Age
+from survey.models import Observation, Observation_Individual
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -144,36 +142,42 @@ def race_graph():
     return figure
 
 def layout():
-    return html.Div(children=[
-        html.Div(children=[
-            html.Div([dcc.Graph(
-                id='groups-individuals',
-                figure=pop_count_graph(),
-                config=config
-            )],
-                style={'display': 'inline-block', 'width': '49%'}),
+    individuals = Observation_Individual.objects.all()
+    if individuals.count() > 0:
+      return html.Div(children=[
+          html.Div(children=[
+              html.Div([dcc.Graph(
+                  id='groups-individuals',
+                  figure=pop_count_graph(),
+                  config=config
+              )],
+                  style={'display': 'inline-block', 'width': '49%'}),
 
-            html.Div([dcc.Graph(
-                id='age-groups',
-                figure=age_graph(),
-                config=config)
-            ], style={'display': 'inline-block', 'width': '49%'})
-        ], className='row'),
+              html.Div([dcc.Graph(
+                  id='age-groups',
+                  figure=age_graph(),
+                  config=config)
+              ], style={'display': 'inline-block', 'width': '49%'})
+          ], className='row'),
 
-        html.Div(children=[
-            html.Div([dcc.Graph(
-                id='gender-groups',
-                figure=gender_graph(),
-                config=config
-            )],
-                style={'display': 'inline-block', 'width': '49%'}),
+          html.Div(children=[
+              html.Div([dcc.Graph(
+                  id='gender-groups',
+                  figure=gender_graph(),
+                  config=config
+              )],
+                  style={'display': 'inline-block', 'width': '49%'}),
 
-            html.Div([dcc.Graph(
-                id='race-groups',
-                figure=race_graph(),
-                config=config)
-            ], style={'display': 'inline-block', 'width': '49%'})
-        ], className='row')
-    ])
+              html.Div([dcc.Graph(
+                  id='race-groups',
+                  figure=race_graph(),
+                  config=config)
+              ], style={'display': 'inline-block', 'width': '49%'})
+          ], className='row')
+      ])
+    else:
+      return html.Div(
+        html.H2('You must have at least one individual created to see charts.'),
+        style={'text-align': 'center'})
 
 app.layout = layout

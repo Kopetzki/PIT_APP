@@ -3,24 +3,19 @@
 {% block title %}Data Dashboard{% endblock %}
 
 {% block content %}
+{% load plotly_dash %}
 
-    {% load plotly_dash %}
-
-        <div class="container-fluid">
-        <div style="padding-top: 100px; padding-left: 10px">
-        <div class="card">
-            <div class="card-body">
-
-            <h2 style="text-align: center">Charts</h2>
-
-                    <hr>
-
-                <div class="{% plotly_class name='main_dash' %} card" style= "height:100%;width: 100%">
-                {% plotly_app name='main_dash' ratio=0.65 %}
-                </div>
-
-
+<div class="container-fluid">
+  <div style="padding-top: 100px; padding-left: 10px">
+    <div class="card">
+      <div class="card-body">
+        <h2 style="text-align: center">Charts</h2>
+        <hr>
+        <div class="{% plotly_class name='main_dash' %} card" style= "height:100%;width: 100%">
+        {% plotly_app name='main_dash' ratio=0.65 %}
         </div>
-        </div>
+      </div>
     </div>
+  </div>
+ </div>
 {% endblock %}
