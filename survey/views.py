@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib import auth
@@ -237,7 +238,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('user1')
+                return redirect('user')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -257,7 +258,7 @@ def resources(request):
 # User views
 # Landing page after login
 @login_required
-def user1(request):
+def user(request):
     return render(request, 'base/user/user1.html')
 
 
@@ -265,7 +266,12 @@ def register(request):
     if request.method == 'POST':
         f = UserCreationForm(request.POST)
         if f.is_valid():
-            f.save()
+            user = f.save()
+            # Give access to admin for all users in debug mode.
+            if settings.DEBUG:
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
             messages.success(request, 'Account created successfully, you can now login.')
             return redirect('login')
         else:
