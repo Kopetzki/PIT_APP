@@ -80,10 +80,11 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+DATABASE_ENGINE = os.getenv('DATABASE_ENGINE')
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'ENGINE': 'django.db.backends.sqlite3' if DATABASE_ENGINE is None else DATABASE_ENGINE,
     }
 }
 
