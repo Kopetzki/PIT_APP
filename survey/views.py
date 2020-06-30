@@ -1,9 +1,9 @@
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
-from django.utils import timezone
-from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
+from django.contrib import auth
+from django.contrib.auth import authenticate
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
@@ -15,10 +15,8 @@ from .forms import Observation_Individual_Form, Observation_Form, Survey_Individ
 def dashboard(requests):
     return render(requests, 'data_dashboard/dashboard.html')
 
-# the survey index does nothing right now
-@login_required
 def index(request):
-    return HttpResponse("Hello, world. You're at the basic survey index.")
+    return render(request, 'base/home1.html')
 
 # ===================================================================
 # Observation Individual
@@ -228,4 +226,56 @@ def survey_new(request):
         # default w/o POST request: render the forms
         form = Survey_Form()
     return render(request, 'survey/survey_form.html', {'form': form})
+
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request=request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                messages.info(request, f"You are now logged in as {username}")
+                return redirect('user1')
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request, 'registration/login.html', context={"form": form})
+
+def logout(request):
+    auth.logout(request)
+    messages.info(request, "You've been logged out.")
+    return redirect('/login')
+
+def resources(request):
+    return render(request, 'base/Resources.html')
+
+
+# User views
+# Landing page after login
+@login_required
+def user1(request):
+    return render(request, 'base/user/user1.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        f = UserCreationForm(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.success(request, 'Account created successfully, you can now login.')
+            return redirect('login')
+        else:
+            messages.error(
+                request,
+                'Something is wrong with your username or password, check that they meet the requirements.')
+            return redirect('register')
+
+    else:
+        f = UserCreationForm()
+
+    return render(request, 'registration/register.html', {'form': f})
 

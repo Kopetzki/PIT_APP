@@ -1,11 +1,23 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
+from django.contrib import admin
 from survey.dash_apps.finished_apps import main_dashboard
 
 urlpatterns = [
     # Doesn't do anything now
     path('', views.index, name='index'),
+
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('user1/', views.user1, name='user1'),
+    path('register/', views.register, name='register'),
+
+    path('resources/', views.resources, name='resources'),
+    path('admin/', admin.site.urls),
+
+    #for dashboard
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
     # Individual Observations
     path('observation_ind_new/', views.observation_ind_new, name='observation_ind_new'),

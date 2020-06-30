@@ -84,7 +84,6 @@ WSGI_APPLICATION = 'PIT_APP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE'),
-
     }
 }
 
@@ -159,7 +158,6 @@ PLOTLY_COMPONENTS = [
     'dash_core_components',
     'dash_html_components',
     'dash_renderer',
-
     'dpd_components'
 ]
 
