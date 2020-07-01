@@ -41,6 +41,7 @@ class Survey_Individual_Form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(Survey_Individual_Form, self).__init__(*args, **kwargs)
+        self.fields['client_survey_race_other'].required = False
         self.fields['client_survey_served_guard_res'].required = False
         self.fields['client_survey_served_VHA'].required = False
         self.fields['client_survey_benefits'].required = False
