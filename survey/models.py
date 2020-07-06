@@ -308,7 +308,7 @@ class Survey(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.survey_householdnum = self.surey_adults + self.survey_children
+            self.survey_householdnum = self.survey_adults + self.survey_children
         super(Survey, self).save(*args, **kwargs)
 
     def __str__(self):
