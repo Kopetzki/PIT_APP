@@ -7,19 +7,22 @@ class Observation_Individual_Form(forms.ModelForm):
     class Meta:
         model = Observation_Individual
         fields = ('client_location', 'client_homeless', 'client_age',
-                  'client_gender', 'client_race', 'client_ethnicity', 'client_information',)
+                  'client_gender', 'client_race', 'client_ethnicity',
+                  #'client_information','client_observation_time','c_obs_user',
+                )
         #fields = '__all__'
 
 
 class Observation_Form(forms.ModelForm):
     class Meta:
         model = Observation
+        exclude = ('obs_user',)
 
         # NOTE:
         # 1) The obs_user should be handled on our end (within views)
         # 2) The obs_householdnum is not user editable (as specified in models)
         fields = ('obs_reason', 'obs_adults', 'obs_children', 'obs_unsure',
-                   'obs_client','obs_time', 'obs_user')
+                   'obs_client','obs_time',)
 
 # Survey
 # Individual
@@ -37,7 +40,7 @@ class Survey_Individual_Form(forms.ModelForm):
                   'client_survey_served_VHA', 'client_survey_benefits', 'client_surey_firsttime' , 'client_survey_homelesslength',
                   'client_survey_homelesslength_number', 'client_survey_timeshomeless', 'client_survey_timeshomeless_length',
                   'client_survey_timeshomeless_number', 'client_survey_over18')
-          """
+        """
 
     def __init__(self, *args, **kwargs):
         super(Survey_Individual_Form, self).__init__(*args, **kwargs)

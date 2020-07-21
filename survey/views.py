@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate
+from formtools.wizard.views import SessionWizardView
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
@@ -40,13 +41,25 @@ def observation_ind_new(request):
     if request.method == "POST":
         form = Observation_Individual_Form(request.POST)
         if form.is_valid():
-            obs_ind = form.save() # Can add commit=False and save alter if need to add time/author/etc.
-            # save many to many relationships correctly
+            obs_ind = form.save()
+            """
+            obs_ind = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
 
-            #print correctly
+            # Save username on backend based on who is logged in
+            current_user = request.user
+            print('user:', current_user.username)
+
+            # attach the user to the form
+            obs_ind.c_obs_user = current_user
+
+            # now save the completed form
+            obs_ind.save()
+            form.save_m2m()  # for many to many fields, must save when commit=False is invoked
+
             print("pk: ", obs_ind.pk)
             print("client_location: ", obs_ind.client_location)
             print("homeless: ", obs_ind.client_homeless)
+            """
 
             return redirect('observation_ind_detail', pk=obs_ind.pk)
     else:
@@ -77,17 +90,38 @@ def general_observation(request):
     if request.method == "POST":
         form = Observation_Form(request.POST)
         if form.is_valid():
-            obs = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+            #obs = form.save()
+            obs = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
 
-            # TO DO: Need to add the obs_user field here with account management BEFORE saving
-            # May also need to add "obs_householdnum"
+            # Save username on backend based on who is logged in
+            current_user = request.user
+            print('user:', current_user.username)
+
+            # attach the user to the form
+            obs.obs_user = current_user
+
+            # now save the completed form
+            obs.save()
+            form.save_m2m()  # for many to many fields, must save when commit=False is invoked
 
             return redirect('observation_detail', pk=obs.pk)
     else:
         # default w/o POST request: render the forms
         # will need an Observation form
+
+        # To do: Get the individuals  JUST submitted from their acct within the past few days
+        # send that data into the html form
+
+        #current_user = request.user
+
+        # make a query set
+        #print("objects:",Observation_Individual()) #Observation_Individual.objects
+
+
         form = Observation_Form()
     return render(request, 'observation/gen_obs.html', {'form': form})
+
+
 
 # ===================================================================
 # Survey Individual

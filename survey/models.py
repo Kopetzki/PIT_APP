@@ -198,6 +198,9 @@ class Observation_Individual(models.Model):
     client_race = models.ManyToManyField(Race, help_text="Hold down \"Control\", or \"Command\" on a Mac, to select more than one.")
     client_ethnicity = models.ForeignKey(Ethnicity, on_delete=models.CASCADE)
     client_information = models.CharField(max_length=200, help_text="Other information or identifying characteristics")
+    # Information for data parsing
+    #client_observation_time = models.DateTimeField(default=timezone.now)
+    #c_obs_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def calc_race(self):
         if len(self.client_race.all()) > 1:

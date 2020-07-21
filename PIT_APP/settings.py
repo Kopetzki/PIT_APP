@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     #for dashboard
     'channels_redis',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    # Form conditions
+    'formtools'
 ]
 
 MIDDLEWARE = [

@@ -28,7 +28,29 @@
                     <form method="POST" class="post-form">
                             {% csrf_token %}
 
-                            {{ form|crispy }}
+
+                            {{ form.obs_reason|as_crispy_field }}
+
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.obs_adults|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.obs_children|as_crispy_field }}
+                              </div>
+                            </div>
+
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.obs_unsure|as_crispy_field }}
+                              </div>
+                                <div class="form-group col-md-6 mb-0">
+                                {{ form.obs_time|as_crispy_field }}
+                              </div>
+                            </div>
+
+                            {{ form.obs_client|as_crispy_field }}
+
 
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary">Submit</button>
