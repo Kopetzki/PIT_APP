@@ -200,7 +200,7 @@ class Observation_Individual(models.Model):
     client_information = models.CharField(max_length=200, help_text="Other information or identifying characteristics")
     # Information for data parsing
     #client_observation_time = models.DateTimeField(default=timezone.now)
-    #c_obs_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    c_obs_user = models.ForeignKey(User,  default =0, on_delete=models.CASCADE)
 
     def calc_race(self):
         if len(self.client_race.all()) > 1:

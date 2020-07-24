@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate
-from formtools.wizard.views import SessionWizardView
+from django.http import HttpResponseRedirect
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
@@ -13,15 +13,22 @@ from .forms import Observation_Individual_Form, Observation_Form, Survey_Individ
 
 # Create your views here.
 
+# ===================================================================
+# Basic Static Views
+# ===================================================================
+# Home
+def index(request):
+    return render(request, 'base/home1.html')
 # Data dashboard
 def dashboard(requests):
     return render(requests, 'data_dashboard/dashboard.html')
-
-def index(request):
-    return render(request, 'base/home1.html')
+# Resources
+def resources(request):
+    return render(request, 'base/Resources.html')
 
 # ===================================================================
 # Observation Individual
+# ===================================================================
 @login_required
 def observation_ind_detail(request, pk):
     obser = get_object_or_404(Observation_Individual, pk=pk)
@@ -35,14 +42,15 @@ def observation_ind_detail(request, pk):
 
     return render(request, 'observation/observation_ind_detail.html', data)
 
-# Handles the form POST and GET
+# Handles the form POST and GET; generate the observation individual form
+# (+ some work in the HTML form) This works to attach users to the individual form
 @login_required
 def observation_ind_new(request):
     if request.method == "POST":
         form = Observation_Individual_Form(request.POST)
         if form.is_valid():
-            obs_ind = form.save()
-            """
+            #obs_ind = form.save()
+            #"""
             obs_ind = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
 
             # Save username on backend based on who is logged in
@@ -56,6 +64,7 @@ def observation_ind_new(request):
             obs_ind.save()
             form.save_m2m()  # for many to many fields, must save when commit=False is invoked
 
+            """
             print("pk: ", obs_ind.pk)
             print("client_location: ", obs_ind.client_location)
             print("homeless: ", obs_ind.client_homeless)
@@ -65,12 +74,14 @@ def observation_ind_new(request):
     else:
         # default w/o POST request: render the forms
         # will need an Observation form
+        print("invalid")
         form = Observation_Individual_Form()
+
     return render(request, 'observation/obs_ind_form.html', {'form': form})
 
 # ===================================================================
 # General Observation
-# WIP: Details need to be smoothed out
+# ===================================================================
 @login_required
 def observation_detail(request, pk):
     obser = get_object_or_404(Observation, pk=pk)
@@ -88,17 +99,16 @@ def observation_detail(request, pk):
 @login_required
 def general_observation(request):
     if request.method == "POST":
-        form = Observation_Form(request.POST)
+        form = Observation_Form(request.user, request.POST)
         if form.is_valid():
             #obs = form.save()
             obs = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
 
             # Save username on backend based on who is logged in
-            current_user = request.user
-            print('user:', current_user.username)
+            print('user:', request.user.username)
 
-            # attach the user to the form
-            obs.obs_user = current_user
+            # attach the user (object) to the form
+            obs.obs_user = request.user
 
             # now save the completed form
             obs.save()
@@ -107,24 +117,19 @@ def general_observation(request):
             return redirect('observation_detail', pk=obs.pk)
     else:
         # default w/o POST request: render the forms
-        # will need an Observation form
 
         # To do: Get the individuals  JUST submitted from their acct within the past few days
         # send that data into the html form
+        print("invalid")
 
-        #current_user = request.user
-
-        # make a query set
-        #print("objects:",Observation_Individual()) #Observation_Individual.objects
-
-
-        form = Observation_Form()
+        # Call the form, but it is initialized with the user parameter to query based on logged in user
+        form = Observation_Form(request.user)
     return render(request, 'observation/gen_obs.html', {'form': form})
-
 
 
 # ===================================================================
 # Survey Individual
+# ===================================================================
 @login_required
 def survey_ind_detail(request, pk):
     survey = get_object_or_404(Survey_Individual, pk=pk)
@@ -185,10 +190,10 @@ def survey_ind_extra_detail(request, pk1 ,pk2):
 
     return render(request, 'survey/survey_ind_extra_detail.html', surveys)
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# ===================================================================
 # Survey Extra
-# Needs to extend off the Individual survey above
-
+# Extends off the Individual survey above
+# ===================================================================
 @login_required
 def survey_individual(request):
     if request.POST:
@@ -240,9 +245,9 @@ def survey_individual(request):
 
     return render(request, 'survey/survey_ind_form.html', forms)
 
-
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# ===================================================================
 # Survey General
+# ===================================================================
 @login_required
 def survey_detail(request, pk):
     survey = get_object_or_404(Survey, pk=pk)
@@ -262,6 +267,9 @@ def survey_new(request):
         form = Survey_Form()
     return render(request, 'survey/survey_form.html', {'form': form})
 
+# ===================================================================
+# User login, logout
+# ===================================================================
 def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
@@ -285,12 +293,10 @@ def logout(request):
     messages.info(request, "You've been logged out.")
     return redirect('/login')
 
-def resources(request):
-    return render(request, 'base/Resources.html')
-
-
-# User views
+# ===================================================================
+# User views, register
 # Landing page after login
+# ===================================================================
 @login_required
 def user(request):
     return render(request, 'base/user/user1.html')

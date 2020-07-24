@@ -16,7 +16,7 @@ urlpatterns = [
     path('resources/', views.resources, name='resources'),
     path('admin/', admin.site.urls),
 
-    #for dashboard
+    # for dashboard
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
     # Individual Observations

@@ -8,7 +8,7 @@ class Observation_Individual_Form(forms.ModelForm):
         model = Observation_Individual
         fields = ('client_location', 'client_homeless', 'client_age',
                   'client_gender', 'client_race', 'client_ethnicity',
-                  #'client_information','client_observation_time','c_obs_user',
+                  'client_information','c_obs_user',
                 )
         #fields = '__all__'
 
@@ -16,6 +16,7 @@ class Observation_Individual_Form(forms.ModelForm):
 class Observation_Form(forms.ModelForm):
     class Meta:
         model = Observation
+        # Exclude from required fields for form; this allows the user to be added on the server side in views.py
         exclude = ('obs_user',)
 
         # NOTE:
@@ -24,11 +25,14 @@ class Observation_Form(forms.ModelForm):
         fields = ('obs_reason', 'obs_adults', 'obs_children', 'obs_unsure',
                    'obs_client','obs_time',)
 
+    def __init__(self, obs_user, *args, **kwargs):
+        super(Observation_Form, self).__init__(*args, **kwargs)
+        # Filter the obs_client objects (the individuals getting surveyed) to only query the current logged in user
+        self.fields['obs_client'].queryset = Observation_Individual.objects.filter(c_obs_user=obs_user)
+
 # Survey
 # Individual
 class Survey_Individual_Form(forms.ModelForm):
-    # not required
-    #client_survey_served_guard_res = forms.IntegerField(required=False)
 
     class Meta:
         model = Survey_Individual
