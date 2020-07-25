@@ -18,34 +18,38 @@
                     <form method="POST" class="post-form">
                         {% csrf_token %}
 
-                        <div class="form-row">
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_location|as_crispy_field }}
-                          </div>
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_homeless|as_crispy_field }}
-                          </div>
-                        </div>
+                        {{ form.client_location|as_crispy_field }}
 
-                        <div class="form-row">
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_age|as_crispy_field }}
-                          </div>
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_gender|as_crispy_field }}
-                          </div>
-                        </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.client_homeless|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.client_age|as_crispy_field }}
+                              </div>
+                            </div>
 
-                        <div class="form-row">
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_race|as_crispy_field }}
-                          </div>
-                          <div class="form-group col-md-6 mb-0">
-                            {{ form.client_ethnicity|as_crispy_field }}
-                          </div>
-                        </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.client_gender|as_crispy_field }}
+                              </div>
+                                <div class="form-group col-md-6 mb-0">
+                                {{ form.client_race|as_crispy_field }}
+                              </div>
+                            </div>
 
-                        {{ form.client_information|as_crispy_field }}
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.client_ethnicity|as_crispy_field }}
+                              </div>
+                                <div class="form-group col-md-6 mb-0">
+                                {{ form.client_information|as_crispy_field }}
+                              </div>
+                            </div>
+
+                        <div style="display: none">
+                            {{ form.c_obs_user|as_crispy_field }}
+                        </div>
 
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
