@@ -154,6 +154,11 @@ def survey_ind_detail(request, pk):
 
     return render(request, 'survey/survey_ind_detail.html', data)
 
+
+# ===================================================================
+# Survey Extra
+# Extends off the Individual survey above
+# ===================================================================
 def survey_ind_extra_detail(request, pk1 ,pk2):
     survey1 = get_object_or_404(Survey_Individual, pk=pk1)
     survey2 = get_object_or_404(Survey_IndividualExtra, pk=pk2)
@@ -190,9 +195,9 @@ def survey_ind_extra_detail(request, pk1 ,pk2):
 
     return render(request, 'survey/survey_ind_extra_detail.html', surveys)
 
+
 # ===================================================================
-# Survey Extra
-# Extends off the Individual survey above
+# Survey Individual
 # ===================================================================
 @login_required
 def survey_individual(request):
@@ -219,6 +224,9 @@ def survey_individual(request):
                 # assign the extra information to "client_survey_over18" variable
                 surv.client_survey_over18 = surv_extra
 
+                # Assign the user object to the survey
+                surv.s_obs_user = request.user
+
                 # now save the completed form
                 surv.save()
                 form.save_m2m() # for many to many fields, must save when commit=False is invoked
@@ -228,8 +236,15 @@ def survey_individual(request):
         # client is younger than 18
         else:
             if form.is_valid():
-                surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
-                form.save_m2m()
+                # delay saving the individual form
+                surv = form.save(commit=False)
+
+                # Assign the user object to the survey
+                surv.s_obs_user = request.user
+
+                # now save the completed form
+                surv.save()
+                form.save_m2m()  # for many to many fields, must save when commit=False is invoked
 
                 return redirect('survey_ind_detail', pk=surv.pk)
 
@@ -251,7 +266,14 @@ def survey_individual(request):
 @login_required
 def survey_detail(request, pk):
     survey = get_object_or_404(Survey, pk=pk)
-    return render(request, 'survey/survey_detail.html', {'survey': survey})
+    # Need to get the client information to display on the front end
+
+    # access the survey's client names
+    client_nameList = survey.clients_list()
+
+    print("client_nameList", client_nameList)
+
+    return render(request, 'survey/survey_detail.html', ({'survey': survey, 'client_nameList':client_nameList}))
 
 # convert here
 @login_required
@@ -259,9 +281,21 @@ def survey_new(request):
     if request.method == "POST":
         form = Survey_Form(request.POST)
         if form.is_valid():
-            surv = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+            # delay saving the individual form
+            surv = form.save(commit=False)
 
-            return redirect('survey_detail', pk=surv.pk)
+            # Assign the user object to the survey
+            surv.survey_user = request.user
+
+            # now save the completed form
+            surv.save()
+            form.save_m2m()  # for many to many fields, must save when commit=False is invoked
+
+            # Get the name(s) of surveyed client(s) to display on detail rendering
+            #listClients = surv.survey_client
+            #print("listClients", listClients)
+
+            return redirect('survey_detail', pk=surv.pk, )
     else:
         # default w/o POST request: render the forms
         form = Survey_Form()

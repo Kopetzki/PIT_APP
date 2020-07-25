@@ -36,7 +36,7 @@ class Survey_Individual_Form(forms.ModelForm):
 
     class Meta:
         model = Survey_Individual
-        exclude = ('client_survey_over18',)
+        exclude = ('client_survey_over18', 's_obs_user') # fields to be filled in on the backend of form
         """
         fields = ('client_survey_initials', 'client_survey_relationship', 'client_survey_hhconfirm', 'client_survey_nonhhlastnight',
                   'client_survey_age_exact', 'client_survey_age_grouped', 'client_survey_ethnicity', 'client_survey_race',
@@ -75,5 +75,11 @@ class Survey_Individual_Extra_Form(forms.ModelForm):
 class Survey_Form(forms.ModelForm):
     class Meta:
         model = Survey
+        exclude = ('survey_user',) # fields to be filled in on the backend of form
         fields = ('survey_lastnight', 'survey_repeat', 'survey_adults', 'survey_children',
                   'survey_client', 'survey_user')
+
+        def __init__(self, survey_user, *args, **kwargs):
+            super(Survey_Form, self).__init__(*args, **kwargs)
+            # Filter the Survey_Form objects (the individuals getting surveyed) to only query the current logged in user
+            self.fields['survey_client'].queryset = Survey_Form.objects.filter(s_obs_user=survey_user)

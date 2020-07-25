@@ -200,7 +200,7 @@ class Observation_Individual(models.Model):
     client_information = models.CharField(max_length=200, help_text="Other information or identifying characteristics")
     # Information for data parsing
     #client_observation_time = models.DateTimeField(default=timezone.now)
-    c_obs_user = models.ForeignKey(User,  default =0, on_delete=models.CASCADE)
+    c_obs_user = models.ForeignKey(User, default =0, on_delete=models.CASCADE)
 
     def calc_race(self):
         if len(self.client_race.all()) > 1:
@@ -291,6 +291,8 @@ class Survey_Individual(models.Model):
     client_survey_timeshomeless_number = models.IntegerField(help_text="Enter number of days/weeks/months/Years:", null=True)
     #following field only completed if individual older than 18
     client_survey_over18 = models.OneToOneField(Survey_IndividualExtra, on_delete=models.CASCADE, help_text="The next set of questions asks about sensitive topics. You don’t have to answer any question that you don’t\nwant to however your answers will be combined with the answers of other people who take the survey and\nused to help provide better programs and services to homeless people.", null=True)
+    # To link the user
+    s_obs_user = models.ForeignKey(User, default =0, on_delete=models.CASCADE)
 
     def __str__(self):
         return "ID: {} - Initials: {} - Age: {}".format(self.pk, self.client_survey_initials, self.client_survey_age_exact)
@@ -298,6 +300,10 @@ class Survey_Individual(models.Model):
     # for query display results
     def race_list(self):
         return ', '.join([ind.get_race_display() for ind in self.client_survey_race.all()])
+
+    # client information
+    def get_client(self):
+        return "Client ID: {} - Initials: {} - Age: {}".format(self.pk, self.client_survey_initials, self.client_survey_age_exact)
 
 
 class Survey(models.Model):
@@ -316,6 +322,10 @@ class Survey(models.Model):
 
     def __str__(self):
         return "ID: {} - Number in Household: {} - User: {}".format(self.pk, self.survey_householdnum, self.survey_user)
+
+    # for query display results
+    def clients_list(self):
+        return ', '.join([ind.get_client() for ind in self.survey_client.all()])
 
 
 class SurveyCase(models.Model):
