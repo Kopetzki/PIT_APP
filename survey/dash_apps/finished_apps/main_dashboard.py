@@ -3,6 +3,9 @@ import dash_html_components as html
 from django_plotly_dash import DjangoDash
 from django.db.models import Count
 from survey.models import Observation, Observation_Individual
+from django.http import HttpRequest
+
+from dash.dependencies import Input, Output
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -142,43 +145,68 @@ def race_graph(inds):
     }
     return figure
 
+def main_dashboard(inds):
+    return html.Div(children=[
+        html.Div(children=[
+            html.Div([dcc.Graph(
+                id='groups-individuals',
+                figure=pop_count_graph(inds),
+                config=config
+            )],
+                style={'display': 'inline-block', 'width': '49%'}),
+
+            html.Div([dcc.Graph(
+                id='age-groups',
+                figure=age_graph(inds),
+                config=config)
+            ], style={'display': 'inline-block', 'width': '49%'})
+        ], className='row'),
+
+        html.Div(children=[
+            html.Div([dcc.Graph(
+                id='gender-groups',
+                figure=gender_graph(inds),
+                config=config
+            )],
+                style={'display': 'inline-block', 'width': '49%'}),
+
+            html.Div([dcc.Graph(
+                id='race-groups',
+                figure=race_graph(inds),
+                config=config)
+            ], style={'display': 'inline-block', 'width': '49%'})
+        ], className='row')
+    ])
+
 def layout():
-    inds = Observation_Individual.objects.all()
-    if inds.count() > 0:
-      return html.Div(children=[
-          html.Div(children=[
-              html.Div([dcc.Graph(
-                  id='groups-individuals',
-                  figure=pop_count_graph(inds),
-                  config=config
-              )],
-                  style={'display': 'inline-block', 'width': '49%'}),
-
-              html.Div([dcc.Graph(
-                  id='age-groups',
-                  figure=age_graph(inds),
-                  config=config)
-              ], style={'display': 'inline-block', 'width': '49%'})
-          ], className='row'),
-
-          html.Div(children=[
-              html.Div([dcc.Graph(
-                  id='gender-groups',
-                  figure=gender_graph(inds),
-                  config=config
-              )],
-                  style={'display': 'inline-block', 'width': '49%'}),
-
-              html.Div([dcc.Graph(
-                  id='race-groups',
-                  figure=race_graph(inds),
-                  config=config)
-              ], style={'display': 'inline-block', 'width': '49%'})
-          ], className='row')
-      ])
+    survey_exists = Observation_Individual.objects.exists()
+    #check_user_admin = HttpRequest.request.user.is_staff
+    if survey_exists:
+      return html.Div([
+        dcc.Tabs(id='tabs', value='tab-1', children=[
+        dcc.Tab(label='Survey Data', value='tab-1'),
+        dcc.Tab(label='Admin', value='tab-2', disabled = False),
+        ]),
+        html.Div(id='main-dashboard')
+        ])
     else:
       return html.Div(
         html.H2('You must have at least one individual created to see charts.'),
         style={'text-align': 'center'})
+
+
+
+#tabs for main dashboard/admin dashboard
+@app.callback(Output('main-dashboard', 'children'),
+              [Input('tabs', 'value')])
+def render_content(tab):
+    if tab == 'tab-1':
+        inds = Observation_Individual.objects.all()
+        return main_dashboard(inds)
+    elif tab == 'tab-2':
+        return html.Div([
+            html.H3('Admin Dash Placeholder')
+        ])
+
 
 app.layout = layout
