@@ -13,5 +13,23 @@ Examples PDFs of the forms:
 3. Set up an account and submit surveys
 
 ## Contributions
-### Zoe
+### Justin Calma
 
+### Timothy Crowley
+
+### Zoe Frongillo
+* Front end UI design
+* Forms submission handling (observation, survey, individuals)
+    * Backend management for saving multiple objects and their inter-dependencies within object models
+
+* Forms front end display
+    * Forms generated
+    * Section survey to dynamically require certain sections based on the selections (i.e. Only clients that were 
+     veterans need to fill out the VHS section, and only clients over 18 need to fill out the over 18 section)
+    * Redirect detail page to query the just submitted form object(s) to display to user the information they just submitted;
+    created functions to make the information readable to the user
+    * Add individuals to forms more dynamically: the forms query individual form objects based on which user logged in
+
+### Edwin Fuquen
+
+### Edin Sabanovic
