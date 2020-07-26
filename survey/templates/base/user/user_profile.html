@@ -1,0 +1,39 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}My Account{% endblock %}
+
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">My Account</h2>
+
+                <div class="container">
+                    <hr>
+
+                    <div style="text-align: center">
+                        <img src="{% static "icons/user_i.png" %}" alt="Italian Trulli" width="100px" height="100px">
+
+                        <div style="padding-top: 15px">
+                            <p><b>Username:</b> {{ userData.username }}</p>
+                            <p><b>Email:</b> {{ userData.email|linebreaksbr }}</p>
+                            <p><b>First Name:</b> {{ userData.fName|linebreaksbr }}</p>
+                            <p><b>Last Name:</b> {{ userData.lName|linebreaksbr }}</p>
+                            <p><b>Is Staff:</b> {{ userData.staff_status|linebreaksbr }}</p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}

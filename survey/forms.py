@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from .models import Observation_Individual, Observation, Survey_Individual,Survey_IndividualExtra, Survey
 
@@ -83,3 +86,14 @@ class Survey_Form(forms.ModelForm):
             super(Survey_Form, self).__init__(*args, **kwargs)
             # Filter the Survey_Form objects (the individuals getting surveyed) to only query the current logged in user
             self.fields['survey_client'].queryset = Survey_Form.objects.filter(s_obs_user=survey_user)
+
+
+# User Creation Forms
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True, help_text='Please enter your first name.')
+    last_name = forms.CharField(max_length=30, required=True, help_text='Please enter your last name.')
+    email = forms.EmailField(max_length=254, help_text='Enter a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )

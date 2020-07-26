@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+#from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate
@@ -9,7 +10,8 @@ from django.http import HttpResponseRedirect
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
-from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
+from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, \
+    Survey_Form, SignUpForm
 
 # Create your views here.
 # ===================================================================
@@ -337,7 +339,7 @@ def user(request):
 
 def register(request):
     if request.method == 'POST':
-        f = UserCreationForm(request.POST)
+        f = SignUpForm(request.POST)
         if f.is_valid():
             user = f.save()
             # Give access to admin for all users in debug mode.
@@ -354,7 +356,41 @@ def register(request):
             return redirect('register')
 
     else:
-        f = UserCreationForm()
+        f = SignUpForm()
 
     return render(request, 'registration/register.html', {'form': f})
 
+# ===================================================================
+# User My account profile
+# ===================================================================
+@login_required
+def user_profile(request):
+    """
+    print(request.user.username)
+    print(request.user.email)
+    print(request.user.first_name)
+    print(request.user.last_name)
+    print(request.user.is_staff)
+    """
+
+    profile_username = request.user.username
+    profile_email = request.user.email
+    profile_fName = request.user.first_name
+    profile_lName = request.user.last_name
+
+    # To change later based on user groups
+    if request.user.is_staff == True:
+        profile_staff = "Approved"
+    else:
+        profile_staff = "Pending"
+
+    # Compact info into user dict to send to the profile page
+    userData = {}
+    userData.update({'username': profile_username,
+                 'email': profile_email,
+                 'fName': profile_fName,
+                 'lName': profile_lName,
+                 'staff_status': profile_staff,
+                 })
+
+    return render(request, 'base/user/user_profile.html', {'userData': userData})
