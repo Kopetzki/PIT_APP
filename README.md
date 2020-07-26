@@ -31,6 +31,7 @@ Examples PDFs of the forms:
     * Redirect detail page to query the just submitted form object(s) to display to user the information they just submitted;
     created functions to make the information readable to the user
     * Add individuals to forms more dynamically: the forms query individual form objects based on which user logged in
+* Expanded user registration forms and added "Profile" page based on user logged in
 
 ### Edwin Fuquen
 * To be filled in 
