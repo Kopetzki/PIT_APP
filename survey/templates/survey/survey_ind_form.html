@@ -5,7 +5,18 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+    <!--Conditional formatting with CSS-->
+    <style>
+      .conditional_form_part {
+        display: none;
+      }
 
+      .conditional_form_part_activator:checked + .conditional_form_part {
+        display: block;
+      }
+    </style>
+
+    <!--Main Container-->
     <div class="container-fluid">
         <div style="padding-top: 100px; padding-left: 10px">
         <div class="card">
@@ -22,9 +33,16 @@
                     {{ form|crispy }}
 
                     <hr>
-                    <h4 style="padding-bottom: 15px">Only proceed if the individual is over 18:</h4>
+                    <p>Is the individual over 18?</p>
+                    <input class="conditional_form_part_activator" type="checkbox" id="over18Check">
 
-                    {{ form_extra|crispy }}
+                    <div class="conditional_form_part">
+                        <div style="padding-top: 15px">
+                            <h4 style="padding-bottom: 15px">Only proceed if the individual is over 18:</h4>
+
+                            {{ form_extra|crispy }}
+                        </div>
+                    </div>
 
                 <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Submit</button>

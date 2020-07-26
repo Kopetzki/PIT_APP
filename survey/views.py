@@ -12,13 +12,11 @@ from .models import Observation_Individual, Observation, Survey_Individual, Surv
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
 
 # Create your views here.
-
 # ===================================================================
 # Basic Static Views
 # ===================================================================
 # Home
 def index(request):
-    #print(request.user.is_staff)
     return render(request, 'base/home1.html')
 # Data dashboard
 def dashboard(requests):

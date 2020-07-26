@@ -4,6 +4,7 @@ from . import views
 from django.contrib import admin
 from survey.dash_apps.finished_apps import main_dashboard
 
+
 urlpatterns = [
     # Doesn't do anything now
     path('', views.index, name='index'),
