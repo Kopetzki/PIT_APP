@@ -14,8 +14,10 @@ Examples PDFs of the forms:
 
 ## Contributions
 ### Justin Calma
+* To be filled in 
 
 ### Timothy Crowley
+* To be filled in 
 
 ### Zoe Frongillo
 * Front end UI design
@@ -31,5 +33,7 @@ Examples PDFs of the forms:
     * Add individuals to forms more dynamically: the forms query individual form objects based on which user logged in
 
 ### Edwin Fuquen
+* To be filled in 
 
 ### Edin Sabanovic
+* To be filled in 
