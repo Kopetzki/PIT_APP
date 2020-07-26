@@ -12,7 +12,6 @@ from .models import Observation_Individual, Observation, Survey_Individual, Surv
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, Survey_Form
 
 # Create your views here.
-
 # ===================================================================
 # Basic Static Views
 # ===================================================================
