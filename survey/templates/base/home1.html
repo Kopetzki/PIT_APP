@@ -3,68 +3,65 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-          <style>
-            body {
-              background-image: linear-gradient(218deg, rgba(108,214,195,1) 0%, rgba(221,202,245,1) 54%, rgba(110,210,230,1) 100%);
-              background-size: cover;
-              background-position: center center;
-            }
-            .container {
-              color: white;
-            }
-          </style>
-          <div class="mask rgba-black-light align-items-center">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12 mb-4 white-text text-center" style="margin-top: 120px;">
-                    <h1 style="color: aliceblue"><b>WELCOME</b></h1>
-                    <hr class="hr-light my-4 wow fadeInDown" >
-                    <h3 style="color: aliceblue">P.I.T. Count</h3>
+          <div class="view" style="background-image: linear-gradient(218deg, rgba(108,214,195,1) 0%, rgba(221,202,245,1) 54%, rgba(110,210,230,1) 100%);  background-size: cover; background-position: center center;">
+            <div class="mask rgba-black-light align-items-center">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12 mb-4 white-text text-center" style="margin-top: 240px;">
+                      <h1 style="color: aliceblue"><b>WELCOME</b></h1>
+                      <hr class="hr-light my-4 wow fadeInDown" >
+                      <h3 style="color: aliceblue">P.I.T. Count</h3>
 
-                </div>
-              </div>
-            </div>
-          </div>
-          <main>
-            <div class="container">
-              <div class="row py-5">
-                <div class="col-md-12 text-center">
-                  <h3>Description of Application</h3>
-                  <p style="color: white"> A web app to conduct Point-In-Time (PIT) Surveys and Observations
-                    to streamline the process from paper to online.  This will make the PIT counts more accessible
-                    and portable to volunteers, and enable admin users to have automatic data analysis capabilities.
-                  </p>
 
-                  <p>
-                    To get started <a href="/login">login</a> or <a href="/register">register</a> if you don't have
-                    an account.
-                  </p>
+                    <div style="padding-top: 40px">
+                       <hr class="hr-light my-4 wow fadeInDown" >
 
-                  <div style="padding-top: 20px">
-                    <h3>About PIT Counts</h3>
-                    <p>
-                      <i>PIT counts are a critical source of data on the number and characteristics of people who are
-                      homeless in the United States. These data are used to measure homelessness on a local and
-                      national level and are published annually on HUD’s HUD Exchange website, which can be
-                      viewed by CoCs and the general public. PIT count data are also provided annually to Congress
-                      as part of the Annual Homeless Assessment Report (AHAR). The AHAR is used by Congress,
-                      HUD, other federal departments, and the general public to understand the nature and extent of
-                      homelessness. HUD’s PIT count data has become increasingly important as a measure of our
-                      local and national progress related to preventing and ending homelessness, especially with
-                      relation to our progress towards meeting the goals of Opening Doors: Federal Strategic Plan
-                      to Prevent and End Homelessness. Therefore, it has become necessary to ask for more
-                      detailed information and to ensure that the data submitted to HUD are as complete and
-                      accurate as practicable. [1]</i>
-                    </p>
-                    <p style="font-size: x-small;"><i>[1]:
-                      <a href="https://files.hudexchange.info/resources/documents/PIT-Count-Methodology-Guide.pdf">
-                        https://files.hudexchange.info/resources/documents/PIT-Count-Methodology-Guide.pdf
-                      </a>
-                    </i></p>
+                        <h3 style="color: aliceblue">Let's Get Started</h3>
+                        <div style="padding-top: 15px">
+                          <a href="/login" class="btn btn-primary" role="button">Login</a>
+                          <a href="/register" class="btn btn-primary" role="button">Register</a>
+                        </div>
+                    </div>
+
+
                   </div>
                 </div>
               </div>
             </div>
-          </main>
-{% endblock %}
+          </div>
 
+        <main>
+          <div class="container">
+            <div class="row py-5">
+              <div class="col-md-12 text-center">
+                  <h3 style="color: white">Description of Application</h3>
+              <p style="color: white"> A web app to conduct Point-In-Time (PIT) Surveys and Observations
+                to streamline the process from paper to online.  This will make the PIT counts more accessible
+                and portable to volunteers, and enable admin users to have automatic data analysis capabilities.</p>
+
+              <div style="padding-top: 20px">
+              <h3 style="color: white">About PIT Counts</h3>
+               <p style="color: white"><i>PIT counts are a critical source of data on the number and characteristics of people who are
+            homeless in the United States. These data are used to measure homelessness on a local and
+            national level and are published annually on HUD’s HUD Exchange website, which can be
+            viewed by CoCs and the general public. PIT count data are also provided annually to Congress
+            as part of the Annual Homeless Assessment Report (AHAR). The AHAR is used by Congress,
+            HUD, other federal departments, and the general public to understand the nature and extent of
+            homelessness. HUD’s PIT count data has become increasingly important as a measure of our
+            local and national progress related to preventing and ending homelessness, especially with
+            relation to our progress towards meeting the goals of Opening Doors: Federal Strategic Plan
+            to Prevent and End Homelessness. Therefore, it has become necessary to ask for more
+            detailed information and to ensure that the data submitted to HUD are as complete and
+                accurate as practicable. [1]</i></p>
+
+            <p style="font-size: x-small; color: white"><i>[1]: https://files.hudexchange.info/resources/documents/PIT-Count-Methodology-Guide.pdf</i></p>
+
+              </div>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+{% endblock %}

@@ -18,6 +18,7 @@ from .forms import Observation_Individual_Form, Observation_Form, Survey_Individ
 # ===================================================================
 # Home
 def index(request):
+    #print(request.user.is_staff)
     return render(request, 'base/home1.html')
 # Data dashboard
 def dashboard(requests):
