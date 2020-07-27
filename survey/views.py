@@ -325,6 +325,13 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
+
+    # clear the existing messages for the logout messages log
+    existing_messages = messages.get_messages(request)
+    for message in existing_messages:
+        # This iteration is necessary
+        pass
+
     messages.info(request, "You've been logged out.")
     return redirect('/login')
 
