@@ -2,8 +2,15 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.validators import RegexValidator
+
+alphaValidator = RegexValidator(r'^[a-zA-Z]*$', 'Only alpha characters are allowed.')
 
 from .models import Observation_Individual, Observation, Survey_Individual,Survey_IndividualExtra, Survey
+
+# define a function to check if a string has any numbers
+def hasNumbers(inString):
+    return any(char.isdigit() for char in inString)
 
 # Observation
 class Observation_Individual_Form(forms.ModelForm):
@@ -13,7 +20,6 @@ class Observation_Individual_Form(forms.ModelForm):
                   'client_gender', 'client_race', 'client_ethnicity',
                   'client_information','c_obs_user',
                 )
-        #fields = '__all__'
 
 
 class Observation_Form(forms.ModelForm):
@@ -48,6 +54,27 @@ class Survey_Individual_Form(forms.ModelForm):
                   'client_survey_homelesslength_number', 'client_survey_timeshomeless', 'client_survey_timeshomeless_length',
                   'client_survey_timeshomeless_number', 'client_survey_over18')
         """
+        #client_survey_initials = forms.CharField( validators=[alphaValidator])
+
+        # this function will be used for the validation
+
+    # Doesn't work yet
+    """
+    def clean(self):
+        # data from the form is fetched using super function
+        super(Survey_Individual_Form, self).clean()
+
+        # extract the client inititals from data
+        initials = self.cleaned_data.get('client_survey_initials')
+
+        # condition check if the initals contain a #
+        if hasNumbers(initials):
+            self._errors['client_survey_initials'] = self.error_class([
+                'Only alpha characters allowed for initials.'])
+
+            # return any errors if found
+        return self.cleaned_data
+    """
 
     def __init__(self, *args, **kwargs):
         super(Survey_Individual_Form, self).__init__(*args, **kwargs)
@@ -56,7 +83,7 @@ class Survey_Individual_Form(forms.ModelForm):
         self.fields['client_survey_served_VHA'].required = False
         self.fields['client_survey_benefits'].required = False
 
-# Individual Extra
+        # Individual Extra
 class Survey_Individual_Extra_Form(forms.ModelForm):
     class Meta:
         model = Survey_IndividualExtra
@@ -82,10 +109,10 @@ class Survey_Form(forms.ModelForm):
         fields = ('survey_lastnight', 'survey_repeat', 'survey_adults', 'survey_children',
                   'survey_client', 'survey_user')
 
-        def __init__(self, survey_user, *args, **kwargs):
-            super(Survey_Form, self).__init__(*args, **kwargs)
-            # Filter the Survey_Form objects (the individuals getting surveyed) to only query the current logged in user
-            self.fields['survey_client'].queryset = Survey_Form.objects.filter(s_obs_user=survey_user)
+    def __init__(self, survey_user, *args, **kwargs):
+        super(Survey_Form, self).__init__(*args, **kwargs)
+        # Filter the Survey_Individual objects (the individuals getting surveyed) to only query the current logged in user
+        self.fields['survey_client'].queryset = Survey_Individual.objects.filter(s_obs_user=survey_user)
 
 
 # User Creation Forms

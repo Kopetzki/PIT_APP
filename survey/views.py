@@ -100,7 +100,7 @@ def observation_detail(request, pk):
 @login_required
 def general_observation(request):
     if request.method == "POST":
-        form = Observation_Form(request.user, request.POST)
+        form = Observation_Form( request.POST)
         if form.is_valid():
             #obs = form.save()
             obs = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
@@ -205,6 +205,9 @@ def survey_individual(request):
     if request.POST:
         form = Survey_Individual_Form(request.POST)
 
+        # init
+        tempAge = 0
+
         #get age
         if form.is_valid():
             surv = form.save(commit=False)
@@ -298,8 +301,9 @@ def survey_new(request):
 
             return redirect('survey_detail', pk=surv.pk, )
     else:
-        # default w/o POST request: render the forms
-        form = Survey_Form()
+        # Call the form, but it is initialized with the user parameter to query based on logged in user
+        form = Survey_Form(request.user)
+
     return render(request, 'survey/survey_form.html', {'form': form})
 
 # ===================================================================
@@ -325,6 +329,13 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
+
+    # clear the existing messages for the logout messages log
+    existing_messages = messages.get_messages(request)
+    for message in existing_messages:
+        # This iteration is necessary
+        pass
+
     messages.info(request, "You've been logged out.")
     return redirect('/login')
 
