@@ -347,6 +347,9 @@ def register(request):
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()
+            # Put new users into Unapproved group
+            # group = Group.objects.get(name='Unapproved Users')
+            # user.groups.add(group)
             messages.success(request, 'Account created successfully, you can now login.')
             return redirect('login')
         else:
