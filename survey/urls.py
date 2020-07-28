@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path, include
 
 from . import views
@@ -44,3 +45,9 @@ urlpatterns = [
     path('survey_new/', views.survey_new, name='survey_new'),
 
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'channels_redis',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     # Form conditions
-    'formtools'
+    'formtools',
+    # Debug page loading perf.
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -173,3 +176,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+INTERNAL_IPS = [
+  '127.0.0.1',
+]
