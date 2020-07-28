@@ -315,7 +315,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('user')
+                return redirect('user_profile')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
