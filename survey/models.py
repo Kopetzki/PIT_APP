@@ -266,7 +266,7 @@ class Survey_IndividualExtra(models.Model):
 
 
 class Survey_Individual(models.Model):
-    client_survey_initials = models.CharField(max_length = 25, help_text = "What are your initials?", null=True)
+    client_survey_initials = models.CharField(max_length = 25, help_text = "What are your initials?", null=True) #, validators=[alphaValidator]
     client_survey_relationship = models.ForeignKey(Relationship, on_delete=models.CASCADE, help_text= "How are you related to the Head of Household (select 'Self' for the HoH)", null=True)
     #skip next two for the head of household, only for other people in household
     client_survey_hhconfirm = models.IntegerField(choices=YES_NO_CHOICES, help_text="Are you staying with this person tonight?", null=True)
