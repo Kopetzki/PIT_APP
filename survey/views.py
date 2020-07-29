@@ -100,7 +100,7 @@ def observation_detail(request, pk):
 @login_required
 def general_observation(request):
     if request.method == "POST":
-        form = Observation_Form( request.POST)
+        form = Observation_Form(request.user, request.POST)
         if form.is_valid():
             #obs = form.save()
             obs = form.save(commit=False)  # Can add commit=False and save alter if need to add time/author/etc.
@@ -283,7 +283,7 @@ def survey_detail(request, pk):
 @login_required
 def survey_new(request):
     if request.method == "POST":
-        form = Survey_Form(request.POST)
+        form = Survey_Form(request.user, request.POST)
         if form.is_valid():
             # delay saving the individual form
             surv = form.save(commit=False)
