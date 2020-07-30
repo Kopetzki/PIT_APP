@@ -9,7 +9,8 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponseRedirect
 
 # import the different classes
-from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES
+from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES, \
+    AGE_CHOICES, ETHNICITY_CHOICES, GENDER_CHOICES, LAST_NIGHT_CHOICES
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, \
     Survey_Form, SignUpForm
 
@@ -407,6 +408,7 @@ def user_profile(request):
     return render(request, 'base/user/user_profile.html', {'userData': userData})
 
 
+# User History
 # Dependent functions
 # Return the status from a multiple choice field (local to the model)
 def get_readable_status(i, choice, obser, gen_obs_objects):
@@ -427,6 +429,19 @@ def get_readable_status(i, choice, obser, gen_obs_objects):
 
     return temp_status
 
+# Parse out yes or no based on 1/0 choice
+def parse_yes_no(obj):
+    repeat = obj.get("survey_repeat")
+
+    # Update the repeat message field
+    if repeat == '0':
+        rep_upd = "No"
+    else:
+        rep_upd = "Yes"
+
+    return rep_upd
+
+# Re-index a model of choices to correlate with how Django stuctures their form data
 def get_re_indexed_models(name_model):
     inst = name_model
     new_model = []
@@ -439,55 +454,93 @@ def get_re_indexed_models(name_model):
 
     return new_model
 
-
+# Get the readable choice data from attributes with Foreign Key relationships to other models
 def get_readable_fk(i, choices_model, gen_obs_objects, field):
     # init
     temp_status = ''
 
     # Re-define model based on counting index of 1
-    new_homeless_model = get_re_indexed_models(choices_model)
+    new_model = get_re_indexed_models(choices_model)
 
     # Iterate through the options and correlate the reasons to the status index
-    for a in range(len(new_homeless_model)):
+    for a in range(len(new_model)):
         # define the current field
         curr_field = gen_obs_objects[i].get(field)
 
-        if curr_field == new_homeless_model[a][0]:
+        if curr_field == new_model[a][0]:
             # retrieve the human readable status
-            temp_status = new_homeless_model[a][1]
+            temp_status = new_model[a][1]
             # once found, can break out of iteration
             break
 
     return temp_status
 
-def get_gen_obs_ind(i, curr_id, curr_object, temp_obj, raw_objects):
+# Specific fields needed for the observation individual
+def get_gen_obs_ind_data(i, curr_id, curr_object, temp_obj, raw_objects):
     # 1) Change the "client homeless id" to be user readable (not the index, but the message)
-
     # method to get the readable data based on fk model ( stored with a "_id" at end)
     temp_status_client_homeless = get_readable_fk(i, HOMELESS_CHOICES, raw_objects, "client_homeless_id")
-
     # Append the change onto the object
     temp_obj.update(upd_client_homeless=temp_status_client_homeless)
 
+    # 2) change the age choices
+    temp_status_client_age = get_readable_fk(i, AGE_CHOICES, raw_objects, "client_age_id")
+    # Append the change onto the object
+    temp_obj.update(upd_client_age=temp_status_client_age)
+
+    # 3) change the gender choices
+    temp_status_client_gender = get_readable_fk(i, GENDER_CHOICES, raw_objects, "client_gender_id")
+    # Append the change onto the object
+    temp_obj.update(upd_client_gender=temp_status_client_gender)
+
+    # 4) M2M Race Field (get via custom model method)
+    curr_race_list = curr_object.race_list()
+    # Append the change onto the object
+    temp_obj.update(upd_client_race=curr_race_list)
+
+    # 5) change the ethnicity choices
+    temp_status_client_ethnicity = get_readable_fk(i, ETHNICITY_CHOICES, raw_objects, "client_ethnicity_id")
+    # Append the change onto the object
+    temp_obj.update(upd_client_ethnicity=temp_status_client_ethnicity)
 
     return temp_obj
 
-def get_gen_obs(i, obser, temp_obs, gen_obs_objects):
+# Specific fields needed for the general observation
+def get_gen_obs_data(i, obser, temp_obs, gen_obs_objects):
     # 1) from that object, use the .clients_list method to get the clients
     curr_client_list = obser.clients_list()
-
     # update the temp object with the current client list
     temp_obs.update(clients=curr_client_list)
 
     # 2) Change the observation reason to be user readable (not the index, but the message)
     temp_status_obs_reason = get_readable_status(i, "obs_reason", obser, gen_obs_objects)
-
     # Update the list to include the readable reasons
     temp_obs.update(upd_obs_reason=temp_status_obs_reason)
 
     return temp_obs
 
+# Specific fields needed for the survey
+def get_survey_data(i, curr_object, temp_obj, raw_objects):
+    # 1) change the last night choices
+    temp_survey_lastnight = get_readable_fk(i, LAST_NIGHT_CHOICES, raw_objects, "survey_lastnight_id")
+    # Append the change onto the object
+    temp_obj.update(upd_survey_lastnight=temp_survey_lastnight)
 
+    # 2) Repeat field: choices are hard coded in model Y/M
+    rep_upd = parse_yes_no(raw_objects[i])
+    # Update the list to include the readable reasons
+    temp_obj.update(upd_survey_repeat=rep_upd)
+
+    # 3) from that object, use the .clients_list method to get the clients
+    curr_client_list = curr_object.clients_list()
+    # update the temp object with the current client list
+    temp_obj.update(clients=curr_client_list)
+
+    return temp_obj
+
+
+# A method to retrieve the user history data in a human readable way
+# Generic for the 4 different forms
 def get_user_history_data(raw_objects, model_type, str_type):
     # init
     final_objects = []
@@ -508,9 +561,13 @@ def get_user_history_data(raw_objects, model_type, str_type):
 
         # branch based on type of data
         if str_type == "Observation":
-            temp_obj = get_gen_obs(i, curr_object, temp_obj, raw_objects)
+            temp_obj = get_gen_obs_data(i, curr_object, temp_obj, raw_objects)
         elif str_type == "Observation_Individual":
-            temp_obj = get_gen_obs_ind(i, curr_id, curr_object, temp_obj, raw_objects)
+            temp_obj = get_gen_obs_ind_data(i, curr_id, curr_object, temp_obj, raw_objects)
+        elif str_type == "Survey":
+            temp_obj = get_survey_data(i, curr_object, temp_obj, raw_objects)
+        else:
+            print("Error: Invalid selection")
 
 
         # add just an index to that object as well
@@ -532,8 +589,6 @@ def user_history(request):
     # 1) Observation Individual Objects
     gen_obs_ind_objects = Observation_Individual.objects.all().filter(c_obs_user=request.user).values()
 
-    print(gen_obs_ind_objects)
-
     # Call the method to parse the data to be user-readable
     # only do this if the length of the queried objects is greater than 1
     if len(gen_obs_ind_objects) >= 1:
@@ -546,10 +601,29 @@ def user_history(request):
     # Call the method to parse the data to be user-readable
     if len(gen_obs_objects) >= 1:
         gen_obs_objects_fin = get_user_history_data(gen_obs_objects, Observation, "Observation")
+        
+    
+    # 3) Survey Individual objects
+
+    # 4) Survey Individual Extra objects
+
+    # 5) Survey objects
+    survey_objects = Survey.objects.all().filter(survey_user=request.user).values()
+    
+    # Call the method to parse the data to be user-readable
+    if len(survey_objects) >= 1:
+        survey_objects_fin = get_user_history_data(survey_objects, Survey, "Survey")
 
 
-    #LATER: add the length of the returned objets so there is only a table if that user has submitted a form of that type
-    # Split into 2 tabs: Observations and Surveys
+    # Get the Length of the different forms query results
+    g_obs_num = len(gen_obs_objects)
+    obs_i_num = len(gen_obs_ind_objects)
+    surv_num = len(survey_objects)
 
-    return render(request, 'base/user/user_history.html', ({'gen_obs_objects_fin': gen_obs_objects_fin,
-                                                            'gen_obs_ind_objects_fin': gen_obs_ind_objects_fin}))
+
+    # Later: Split into 2 tabs: Observations and Surveys
+
+    return render(request, 'base/user/user_history.html', ({'g_obs_num':g_obs_num, 'obs_i_num':obs_i_num, 'surv_num':surv_num,
+                                                            'gen_obs_objects_fin': gen_obs_objects_fin,
+                                                            'gen_obs_ind_objects_fin': gen_obs_ind_objects_fin,
+                                                            'survey_objects_fin':survey_objects_fin, }))

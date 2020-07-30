@@ -13,11 +13,13 @@
                 <div class="container">
                     <hr>
 
+                    {% if obs_i_num >= 1 %}
                      <h4 style="text-align: center">Observation Individuals</h4>
                     <table class="table table-striped">
                       <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">ID</th>
                           <th scope="col">Client Location</th>
                           <th scope="col">Client Homeless</th>
                           <th scope="col">Client Age</th>
@@ -31,12 +33,13 @@
                         {% for q in gen_obs_ind_objects_fin %}
                             <tr>
                               <th>{{ q.num }}</th>
+                              <td>{{ q.id }}</td>
                               <td>{{ q.client_location }}</td>
                               <td>{{ q.upd_client_homeless }}</td>
-                              <td>{{ q.client_age }}</td>
-                              <td>{{ q.client_gender }}</td>
-                              <td>{{ q.client_race }}</td>
-                              <td>{{ q.client_ethnicity }}</td>
+                              <td>{{ q.upd_client_age }}</td>
+                              <td>{{ q.upd_client_gender }}</td>
+                              <td>{{ q.upd_client_race }}</td>
+                              <td>{{ q.upd_client_ethnicity }}</td>
                               <td>{{ q.client_information }}</td>
                             </tr>
 
@@ -44,7 +47,9 @@
 
                       </tbody>
                     </table>
+                {% endif %}
 
+                {% if g_obs_num >= 1 %}
                     <h4 style="text-align: center">General Observations</h4>
                     <table class="table table-striped">
                       <thead>
@@ -76,7 +81,39 @@
 
                       </tbody>
                     </table>
+                {% endif %}
 
+                {% if surv_num >= 1 %}
+                    <h4 style="text-align: center">Surveys</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                          <th scope="col">Survey Last Night</th>
+                          <th scope="col">Repeat</th>
+                            <th scope="col"># Adults</th>
+                          <th scope="col"># Children</th>
+                            <th scope="col"># Household</th>
+                          <th scope="col">Survey Client(s)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in survey_objects_fin %}
+                            <tr>
+                              <th>{{ q.num }}</th>
+                              <td>{{ q.upd_survey_lastnight }}</td>
+                              <td>{{ q.upd_survey_repeat }}</td>
+                              <td>{{ q.survey_adults }}</td>
+                              <td>{{ q.survey_children }}</td>
+                              <td>{{ q.survey_householdnum }}</td>
+                              <td>{{ q.clients }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                {% endif %}
 
 
                     
