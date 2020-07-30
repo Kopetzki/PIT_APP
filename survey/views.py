@@ -319,7 +319,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('user')
+                return redirect('user_profile')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -358,6 +358,9 @@ def register(request):
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()
+            # Put new users into Unapproved group
+            # group = Group.objects.get(name='Unapproved Users')
+            # user.groups.add(group)
             messages.success(request, 'Account created successfully, you can now login.')
             return redirect('login')
         else:
@@ -390,10 +393,14 @@ def user_profile(request):
     profile_lName = request.user.last_name
 
     # To change later based on user groups
-    if request.user.is_staff == True:
+    if request.user.groups.filter(name='Admin Users').exists():
+        profile_staff = "Admin"
+    elif request.user.groups.filter(name='Approved Users').exists():
         profile_staff = "Approved"
+    elif request.user.groups.filter(name='Unapproved Users').exists():
+        profile_staff = "Unapproved"
     else:
-        profile_staff = "Pending"
+        profile_staff = "Unknown"
 
     # Compact info into user dict to send to the profile page
     userData = {}
