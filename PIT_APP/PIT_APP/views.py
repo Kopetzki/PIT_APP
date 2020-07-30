@@ -50,6 +50,9 @@ def register(request):
     if request.method == 'POST':
         f = UserCreationForm(request.POST)
         if f.is_valid():
+            # Put new users into Unapproved group
+            # group = Group.objects.get(name='Unapproved Users')
+            # user.groups.add(group)
             f.save()
             messages.success(request, 'Account created successfully, you can now login.')
             return redirect('login')
