@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponseRedirect
 
 # import the different classes
-from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey
+from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, \
     Survey_Form, SignUpForm
 
@@ -405,3 +405,151 @@ def user_profile(request):
                  })
 
     return render(request, 'base/user/user_profile.html', {'userData': userData})
+
+
+# Dependent functions
+# Return the status from a multiple choice field (local to the model)
+def get_readable_status(i, choice, obser, gen_obs_objects):
+    # init
+    temp_status = ''
+
+    # Get the STATUS options
+    reasons = obser._meta.get_field(choice).choices
+
+    # Iterate through the options and correlate the reasons to the status index
+    for a in range(len(reasons)):
+        if gen_obs_objects[i].get(choice) == reasons[a][0]:
+            # retrieve the human readable status
+            temp_status = reasons[a][1]
+
+            # once found, can break out of iteration
+            break
+
+    return temp_status
+
+def get_re_indexed_models(name_model):
+    inst = name_model
+    new_model = []
+
+    # based on the # of choice in the model, re-index the choices starting at 1
+    for x in range(len(inst)):
+        # start x at 0 because Django saves fk id's starting @ 1
+        curr_tuple = (x+1, name_model[x][1])
+        new_model.append(curr_tuple)
+
+    return new_model
+
+
+def get_readable_fk(i, choices_model, gen_obs_objects, field):
+    # init
+    temp_status = ''
+
+    # Re-define model based on counting index of 1
+    new_homeless_model = get_re_indexed_models(choices_model)
+
+    # Iterate through the options and correlate the reasons to the status index
+    for a in range(len(new_homeless_model)):
+        # define the current field
+        curr_field = gen_obs_objects[i].get(field)
+
+        if curr_field == new_homeless_model[a][0]:
+            # retrieve the human readable status
+            temp_status = new_homeless_model[a][1]
+            # once found, can break out of iteration
+            break
+
+    return temp_status
+
+def get_gen_obs_ind(i, curr_id, curr_object, temp_obj, raw_objects):
+    # 1) Change the "client homeless id" to be user readable (not the index, but the message)
+
+    # method to get the readable data based on fk model ( stored with a "_id" at end)
+    temp_status_client_homeless = get_readable_fk(i, HOMELESS_CHOICES, raw_objects, "client_homeless_id")
+
+    # Append the change onto the object
+    temp_obj.update(upd_client_homeless=temp_status_client_homeless)
+
+
+    return temp_obj
+
+def get_gen_obs(i, obser, temp_obs, gen_obs_objects):
+    # 1) from that object, use the .clients_list method to get the clients
+    curr_client_list = obser.clients_list()
+
+    # update the temp object with the current client list
+    temp_obs.update(clients=curr_client_list)
+
+    # 2) Change the observation reason to be user readable (not the index, but the message)
+    temp_status_obs_reason = get_readable_status(i, "obs_reason", obser, gen_obs_objects)
+
+    # Update the list to include the readable reasons
+    temp_obs.update(upd_obs_reason=temp_status_obs_reason)
+
+    return temp_obs
+
+
+def get_user_history_data(raw_objects, model_type, str_type):
+    # init
+    final_objects = []
+
+    print(len(raw_objects))
+
+    # iterate through the object list, and get the object with that primary key
+    for i in range(len(raw_objects)):
+        # get curr id based on the iteration we are in within object list
+        curr_id = raw_objects[i].get("id")
+        # print("id", curr_id)
+
+        # get the corresponding object by pk id
+        curr_object = get_object_or_404(model_type, pk=curr_id)
+
+        # create a temp object based on the iteration
+        temp_obj = raw_objects[i]
+
+        # branch based on type of data
+        if str_type == "Observation":
+            temp_obj = get_gen_obs(i, curr_object, temp_obj, raw_objects)
+        elif str_type == "Observation_Individual":
+            temp_obj = get_gen_obs_ind(i, curr_id, curr_object, temp_obj, raw_objects)
+
+
+        # add just an index to that object as well
+        temp_obj.update(num=i)
+
+        # append temp to a list
+        final_objects.append(temp_obj)
+
+    # Return
+    return final_objects
+
+
+
+
+# User History
+@login_required
+def user_history(request):
+    # Query the different objects based on the user logged in
+    # 1) Observation Individual Objects
+    gen_obs_ind_objects = Observation_Individual.objects.all().filter(c_obs_user=request.user).values()
+
+    print(gen_obs_ind_objects)
+
+    # Call the method to parse the data to be user-readable
+    # only do this if the length of the queried objects is greater than 1
+    if len(gen_obs_ind_objects) >= 1:
+        gen_obs_ind_objects_fin = get_user_history_data(gen_obs_ind_objects, Observation_Individual, "Observation_Individual")
+
+
+    # 2) General Observation objects
+    gen_obs_objects = Observation.objects.all().filter(obs_user=request.user).values()
+
+    # Call the method to parse the data to be user-readable
+    if len(gen_obs_objects) >= 1:
+        gen_obs_objects_fin = get_user_history_data(gen_obs_objects, Observation, "Observation")
+
+
+    #LATER: add the length of the returned objets so there is only a table if that user has submitted a form of that type
+    # Split into 2 tabs: Observations and Surveys
+
+    return render(request, 'base/user/user_history.html', ({'gen_obs_objects_fin': gen_obs_objects_fin,
+                                                            'gen_obs_ind_objects_fin': gen_obs_ind_objects_fin}))
