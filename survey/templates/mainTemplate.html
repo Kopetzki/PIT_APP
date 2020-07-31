@@ -1,4 +1,5 @@
 {% load static %}
+{% load compress %}
 
 <html lang="en">
 
@@ -35,7 +36,7 @@
     </style>
 
     <head>
-      <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+      <link rel="shortcut icon" type="image/png" href="data:image/vndmicrosofticon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAACMuAAAjLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM/b2wAAO1YAi620DXaepzZpkptsXoWNlFR6gZ9RdXucUHF4iVd2fGFohIgsh56iCCxYXQD29/gAAAAAAKa7wAJ6prAfcKCqa2mapb9gk5/vVoqV/kx+if9HdYD/QG13/zpkbf85X2f9O15k6EBfZbNRbHNba4KIEENfZwB3p7KLYJqo22Kbqf1gmaf/WZGf/1SLmP9Og5D/R3qH/0V2g/9Ld4T/Q256/zRcZv8sUFj/MFFY+TZVW71FX2ZXeK297WGitP9oprj/bKW3/2egsf9kmqv/X5Wm/1iOn/9YjJ3/XY6e/1qLm/9Pf5D/RXKB/zxmdP86X2v/VGx28pXF199/us//d7XK/3y2yv9/tMj/f7LF/3quwf9xprn/b6O1/2icr/9kmq3/Y5eq/2CUp/9ekKT/b5ap/4umt+6s0+NWkMfbvIbC1/mMwtf/kcLW/46+0v+FuMz/gLLG/36ww/96q7//dai8/3eovP95qLv/fay//YexxMyivc50kMbcAKXR4Q+k0eJcmsfeuo292fSQwNf/jsDU/4i6z/+Ht8v/hrXJ/4m3yv+LuMr2k7zMzpi/zXiXvcwamsLOAAAAAADn8fYAksLbALPV5gyiyd9CocrehZ7J27KUwtXHkb7RypK+0LOXwNGDnMLSR6rJ1RT++vMB1OLlAAAAAAAAAAAAAAAAAAAAAAAAAAAAwtnfAPDx6wCqzNkFocbVDarL2A6/1t4F+PTvAN/n6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AAD//wAA//8AAOAHAAAAAQAAAAAAAAAAAAAAAAAAAAAAAIABAADgAwAA/D8AAP//AAD//wAA//8AAA=="/>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,7 +45,9 @@
 
     <title>{% block title %} {% endblock %}</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% endcompress %}
 
     <body style="background-color: rgb(141, 172, 202)">
           <!--Navbar-->
@@ -125,8 +128,10 @@
 
           {% endblock %}
 
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      {% compress js %}
+      <script src="{% static 'jquery.min.js' %}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="{% static 'popper.min.js' %}" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="{% static 'bootstrap.min.js' %}" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      {% endcompress %}
     </body>
 </html>
