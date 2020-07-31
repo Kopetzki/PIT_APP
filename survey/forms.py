@@ -26,7 +26,7 @@ class Observation_Form(forms.ModelForm):
     class Meta:
         model = Observation
         # Exclude from required fields for form; this allows the user to be added on the server side in views.py
-        exclude = ('obs_user',)
+        exclude = ('obs_user', 'obs_adults', 'obs_children', 'obs_unsure')
 
         # NOTE:
         # 1) The obs_user should be handled on our end (within views)
@@ -45,10 +45,10 @@ class Survey_Individual_Form(forms.ModelForm):
 
     class Meta:
         model = Survey_Individual
-        exclude = ('client_survey_over18', 's_obs_user') # fields to be filled in on the backend of form
+        exclude = ('client_survey_over18', 's_obs_user', 'client_survey_age_grouped') # fields to be filled in on the backend ofform
         """
         fields = ('client_survey_initials', 'client_survey_relationship', 'client_survey_hhconfirm', 'client_survey_nonhhlastnight',
-                  'client_survey_age_exact', 'client_survey_age_grouped', 'client_survey_ethnicity', 'client_survey_race',
+                  'client_survey_age_exact', , 'client_survey_ethnicity', 'client_survey_race',
                   'client_survey_race_other', 'client_survey_gender', 'client_survey_served', 'client_survey_served_guard_res',
                   'client_survey_served_VHA', 'client_survey_benefits', 'client_surey_firsttime' , 'client_survey_homelesslength',
                   'client_survey_homelesslength_number', 'client_survey_timeshomeless', 'client_survey_timeshomeless_length',
@@ -105,9 +105,8 @@ class Survey_Individual_Extra_Form(forms.ModelForm):
 class Survey_Form(forms.ModelForm):
     class Meta:
         model = Survey
-        exclude = ('survey_user',) # fields to be filled in on the backend of form
-        fields = ('survey_lastnight', 'survey_repeat', 'survey_adults', 'survey_children',
-                  'survey_client', 'survey_user')
+        exclude = ('survey_user', 'survey_adults', 'survey_children',) # fields to be filled in on the backend of form
+        fields = ('survey_lastnight', 'survey_repeat', 'survey_client', 'survey_user')
 
     def __init__(self, survey_user, *args, **kwargs):
         super(Survey_Form, self).__init__(*args, **kwargs)

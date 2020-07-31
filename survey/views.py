@@ -1,15 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-#from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate
-from django.http import HttpResponseRedirect
+from django.db.models import Q
 
 # import the different classes
-from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES, \
+from .models import Age, Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES, \
     AGE_CHOICES, ETHNICITY_CHOICES, GENDER_CHOICES, LAST_NIGHT_CHOICES, YES_NO_CHOICES, RELATIONSHIP_CHOICES, \
     GENDER_DETAILED_CHOICES, HOMELESS_LENGTH_CHOICES, TIMES_HOMELESS_CHOICE, BARRIERS_CHOICES
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, \
@@ -112,6 +111,16 @@ def general_observation(request):
 
             # attach the user (object) to the form
             obs.obs_user = request.user
+
+            # Calculate the ages for the form based on individuals observed.
+            ages = [ind.client_age for ind in form.cleaned_data['obs_client']]
+            for age in ages:
+                if age.age == 0:
+                    obs.obs_children += 1
+                elif age.age == 1 or age.age == 2:
+                    obs.obs_adults += 1
+                else:
+                    obs.obs_unsure += 1
 
             # now save the completed form
             obs.save()
@@ -233,6 +242,12 @@ def survey_individual(request):
                 # Assign the user object to the survey
                 surv.s_obs_user = request.user
 
+                # Derive age group from required exact age.
+                if tempAge < 25:
+                    surv.client_survey_age_grouped = Age.objects.get(age=1)
+                else:
+                    surv.client_survey_age_grouped = Age.objects.get(age=2)
+
                 # now save the completed form
                 surv.save()
                 form.save_m2m() # for many to many fields, must save when commit=False is invoked
@@ -247,6 +262,9 @@ def survey_individual(request):
 
                 # Assign the user object to the survey
                 surv.s_obs_user = request.user
+
+                # Must be under 18 to take this branch.
+                surv.client_survey_age_grouped = Age.objects.get(age=0)
 
                 # now save the completed form
                 surv.save()
@@ -292,6 +310,14 @@ def survey_new(request):
 
             # Assign the user object to the survey
             surv.survey_user = request.user
+
+            # Calculate the ages for the form based on individuals observed.
+            ages = [ind.client_survey_age_exact for ind in form.cleaned_data['survey_client']]
+            for age in ages:
+                if age < 18:
+                    surv.survey_children += 1
+                else:
+                    surv.survey_adults += 1
 
             # now save the completed form
             surv.save()
