@@ -155,8 +155,7 @@ STATICFILES_FINDERS = [
   # other finders..
   'compressor.finders.CompressorFinder',
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-COMPRESS_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'PIT_APP', 'static')
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True

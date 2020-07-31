@@ -1,2 +1,2 @@
 recursive-include survey/templates *
-recursive-include static *
+recursive-include PIT_APP/static *
