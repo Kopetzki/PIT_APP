@@ -66,7 +66,7 @@
                   {% if user.is_authenticated %}
                   {% if user.is_staff %}
                   <li class="nav-item {% if request.path == '/user/' %}active{% endif %}">
-                    <a class="nav-link" href="/user">Forms{% if request.path == '/user/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="/user/">Forms{% if request.path == '/user/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
                   {% endif %}
@@ -84,14 +84,14 @@
                   {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                   <li class="nav-item {% if request.path == '/admin/' %}active{% endif %}">
-                    <a class="nav-link" href="/admin">Admin{% if request.path == '/admin/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="/admin/">Admin{% if request.path == '/admin/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
                   {% endif %}
 
                   {% if user.is_authenticated %}
                   <li class="nav-item {% if request.path == '/user_profile/' %}active{% endif %}">
-                    <a class="nav-link" href="/user_profile">Profile{% if request.path == '/user_profile/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="/user_profile/">Profile{% if request.path == '/user_profile/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
 
@@ -103,20 +103,20 @@
 
                   {% if user.is_authenticated == False %}
                   <li class="nav-item {% if request.path == '/login/' %}active{% endif %}">
-                    <a class="nav-link" href="/login">Login{% if request.path == '/login/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="/login/">Login{% if request.path == '/login/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
 
                   {% if user.is_authenticated == False %}
                   <li class="nav-item {% if request.path == '/register/' %}active{% endif %}">
-                    <a class="nav-link" href="/register">Register{% if request.path == '/register/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="/register/">Register{% if request.path == '/register/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
 
                   {% if user.is_authenticated %}
                   <li>
                      <li class="nav-item {% if request.path == '/logout/' %}active{% endif %}">
-                     <a class="nav-link" href="/logout">Logout{% if request.path == '/logout/' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                     <a class="nav-link" href="/logout/">Logout{% if request.path == '/logout/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
                 </ul>
