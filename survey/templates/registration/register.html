@@ -6,14 +6,28 @@
 
 {% load crispy_forms_tags %}
 
+{% block style %}
+<style>
+    @media (max-width: 575.98px) {
+        .container-fluid {
+            padding-left: 0!important;
+            padding-right: 0!important;
+        }
+        .form-group {
+            width: 350px!important;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
     <div class="container-fluid">
-        <div style="padding-top: 100px; padding-left: 10px">
+        <div style="padding-top: 100px;">
         <div class="card">
             <div class="card-body">
 
-            <div class="row justify-content-md-center">
+            <div class="row justify-content-center">
                  <div class="login">
                      {% if messages %}
                         <div class="alert alert-primary" role="alert">
@@ -25,16 +39,16 @@
 
                     <h2 style="text-align: center">Register</h2>
 
-                    <div class="row justify-content-md-center">
+                    <div class="row justify-content-center">
                          <form method="post" >
                              {% csrf_token %}
                                 {{ form|crispy }}
-                             <div class="row justify-content-md-center">
+                             <div class="row justify-content-center">
                                 <button class="btn btn-primary" type="submit" name="submit" value="Register" >Register</button>
                              </div>
                          </form>
                     </div>
-                 <p style="text-align: center">Already have an account? <a href="/login" target="blank"><strong>Login here</strong></a>!</p>
+                 <p style="text-align: center">Already have an account? <a href="/login/"><strong>Login here</strong></a>!</p>
 
 
                  </div>
