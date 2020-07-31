@@ -10,7 +10,8 @@ from django.http import HttpResponseRedirect
 
 # import the different classes
 from .models import Observation_Individual, Observation, Survey_Individual, Survey_IndividualExtra, Survey, HOMELESS_CHOICES, \
-    AGE_CHOICES, ETHNICITY_CHOICES, GENDER_CHOICES, LAST_NIGHT_CHOICES
+    AGE_CHOICES, ETHNICITY_CHOICES, GENDER_CHOICES, LAST_NIGHT_CHOICES, YES_NO_CHOICES, RELATIONSHIP_CHOICES, \
+    GENDER_DETAILED_CHOICES, HOMELESS_LENGTH_CHOICES, TIMES_HOMELESS_CHOICE
 from .forms import Observation_Individual_Form, Observation_Form, Survey_Individual_Form, Survey_Individual_Extra_Form, \
     Survey_Form, SignUpForm
 
@@ -430,14 +431,16 @@ def get_readable_status(i, choice, obser, gen_obs_objects):
     return temp_status
 
 # Parse out yes or no based on 1/0 choice
-def parse_yes_no(obj):
-    repeat = obj.get("survey_repeat")
+def parse_yes_no(obj, field):
+    val_field = obj.get(field)
 
-    # Update the repeat message field
-    if repeat == '0':
+    # Update the message field
+    if val_field == 0:
         rep_upd = "No"
-    else:
+    elif val_field == 1:
         rep_upd = "Yes"
+    else:
+        rep_upd = "DK/REF"
 
     return rep_upd
 
@@ -526,8 +529,8 @@ def get_survey_data(i, curr_object, temp_obj, raw_objects):
     # Append the change onto the object
     temp_obj.update(upd_survey_lastnight=temp_survey_lastnight)
 
-    # 2) Repeat field: choices are hard coded in model Y/M
-    rep_upd = parse_yes_no(raw_objects[i])
+    # 2) Repeat field: choices are hard coded in model Y/N
+    rep_upd = parse_yes_no(raw_objects[i], "survey_repeat")
     # Update the list to include the readable reasons
     temp_obj.update(upd_survey_repeat=rep_upd)
 
@@ -538,14 +541,70 @@ def get_survey_data(i, curr_object, temp_obj, raw_objects):
 
     return temp_obj
 
+# Specific fields needed for the survey individual
+def get_survey_ind_data(i, curr_object, temp_obj, raw_objects):
+    # 1) change the relationship choices
+    temp_s_relationship = get_readable_fk(i, RELATIONSHIP_CHOICES, raw_objects, "client_survey_relationship_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_relationship=temp_s_relationship)
+
+    # 2) change the hhconfirm
+    temp_s_hhconfirm = parse_yes_no(raw_objects[i], "client_survey_hhconfirm")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_hhconfirm=temp_s_hhconfirm)
+
+    # 3) change the age choices
+    temp_s_age_group = get_readable_fk(i, AGE_CHOICES, raw_objects, "client_survey_age_grouped_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_age_g=temp_s_age_group)
+
+    # 4) change the ethnicity choices (Y/N)
+    temp_s_ethnicity = parse_yes_no(raw_objects[i], "client_survey_ethnicity")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_ethnicity=temp_s_ethnicity)
+
+    # 5) M2M Race Field (get via custom model method)
+    curr_race_list = curr_object.race_list()
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_race=curr_race_list)
+
+    # 6) change the detailed gender
+    temp_s_gender = get_readable_fk(i, GENDER_DETAILED_CHOICES, raw_objects, "client_survey_gender_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_gender=temp_s_gender)
+
+    # 7) change the served choices (Y/N)
+    temp_s_served = parse_yes_no(raw_objects[i], "client_survey_served")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_served=temp_s_served)
+
+    # 8) change the firsttime choices (Y/N)
+    temp_s_firsttime = parse_yes_no(raw_objects[i], "client_surey_firsttime")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_firsttime=temp_s_firsttime)
+
+    # 9) change the homeless length
+    temp_s_homeless_length= get_readable_fk(i, HOMELESS_LENGTH_CHOICES, raw_objects, "client_survey_homelesslength_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_homeless_length=temp_s_homeless_length)
+
+    # 10) change the t homeless
+    temp_s_t_homeless = get_readable_fk(i, TIMES_HOMELESS_CHOICE, raw_objects, "client_survey_timeshomeless_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_t_homeless=temp_s_t_homeless)
+
+    # 11) change the t homeless length
+    temp_s_t_homeless_length = get_readable_fk(i, HOMELESS_LENGTH_CHOICES, raw_objects, "client_survey_timeshomeless_length_id")
+    # Append the change onto the object
+    temp_obj.update(upd_s_i_t_homeless_length=temp_s_t_homeless_length)
+
+    return temp_obj
 
 # A method to retrieve the user history data in a human readable way
 # Generic for the 4 different forms
 def get_user_history_data(raw_objects, model_type, str_type):
     # init
     final_objects = []
-
-    print(len(raw_objects))
 
     # iterate through the object list, and get the object with that primary key
     for i in range(len(raw_objects)):
@@ -566,6 +625,9 @@ def get_user_history_data(raw_objects, model_type, str_type):
             temp_obj = get_gen_obs_ind_data(i, curr_id, curr_object, temp_obj, raw_objects)
         elif str_type == "Survey":
             temp_obj = get_survey_data(i, curr_object, temp_obj, raw_objects)
+        elif str_type == "Survey_Individual":
+            temp_obj = get_survey_ind_data(i, curr_object, temp_obj, raw_objects)
+            print("tbd")
         else:
             print("Error: Invalid selection")
 
@@ -580,11 +642,14 @@ def get_user_history_data(raw_objects, model_type, str_type):
     return final_objects
 
 
-
-
 # User History
 @login_required
 def user_history(request):
+    return render(request, 'base/user/user_history.html')
+
+# User History Observations
+@login_required
+def user_history_obs(request):
     # Query the different objects based on the user logged in
     # 1) Observation Individual Objects
     gen_obs_ind_objects = Observation_Individual.objects.all().filter(c_obs_user=request.user).values()
@@ -592,8 +657,8 @@ def user_history(request):
     # Call the method to parse the data to be user-readable
     # only do this if the length of the queried objects is greater than 1
     if len(gen_obs_ind_objects) >= 1:
-        gen_obs_ind_objects_fin = get_user_history_data(gen_obs_ind_objects, Observation_Individual, "Observation_Individual")
-
+        gen_obs_ind_objects_fin = get_user_history_data(gen_obs_ind_objects, Observation_Individual,
+                                                        "Observation_Individual")
 
     # 2) General Observation objects
     gen_obs_objects = Observation.objects.all().filter(obs_user=request.user).values()
@@ -601,29 +666,45 @@ def user_history(request):
     # Call the method to parse the data to be user-readable
     if len(gen_obs_objects) >= 1:
         gen_obs_objects_fin = get_user_history_data(gen_obs_objects, Observation, "Observation")
-        
-    
-    # 3) Survey Individual objects
-
-    # 4) Survey Individual Extra objects
-
-    # 5) Survey objects
-    survey_objects = Survey.objects.all().filter(survey_user=request.user).values()
-    
-    # Call the method to parse the data to be user-readable
-    if len(survey_objects) >= 1:
-        survey_objects_fin = get_user_history_data(survey_objects, Survey, "Survey")
-
 
     # Get the Length of the different forms query results
     g_obs_num = len(gen_obs_objects)
     obs_i_num = len(gen_obs_ind_objects)
+
+    return render(request, 'base/user/user_history_obs.html',
+                  ({'g_obs_num': g_obs_num, 'obs_i_num': obs_i_num,
+                    'gen_obs_objects_fin': gen_obs_objects_fin,
+                    'gen_obs_ind_objects_fin': gen_obs_ind_objects_fin,
+                    }))
+
+
+@login_required
+def user_history_surv(request):
+    # Query the different objects based on the user logged in
+    # 1) Survey Individual objects
+    survey_ind_objects = Survey_Individual.objects.all().filter(s_obs_user=request.user).values()
+
+    if len(survey_ind_objects) >= 1:
+        survey_ind_objects_fin = get_user_history_data(survey_ind_objects, Survey_Individual, "Survey_Individual")
+
+    print(survey_ind_objects)
+
+    # 2) Survey Individual Extra objects
+
+    # 3) Survey objects
+    survey_objects = Survey.objects.all().filter(survey_user=request.user).values()
+
+    # Call the method to parse the data to be user-readable
+    if len(survey_objects) >= 1:
+        survey_objects_fin = get_user_history_data(survey_objects, Survey, "Survey")
+
+    # Get the Length of the different forms query results
     surv_num = len(survey_objects)
+    surv_i_num = len(survey_ind_objects)
 
-
-    # Later: Split into 2 tabs: Observations and Surveys
-
-    return render(request, 'base/user/user_history.html', ({'g_obs_num':g_obs_num, 'obs_i_num':obs_i_num, 'surv_num':surv_num,
-                                                            'gen_obs_objects_fin': gen_obs_objects_fin,
-                                                            'gen_obs_ind_objects_fin': gen_obs_ind_objects_fin,
-                                                            'survey_objects_fin':survey_objects_fin, }))
+    return render(request, 'base/user/user_history_surv.html',
+                  ({'surv_num': surv_num,
+                    'surv_i_num': surv_i_num,
+                    'survey_objects_fin': survey_objects_fin,
+                    'survey_ind_objects_fin': survey_ind_objects_fin,
+                    }))

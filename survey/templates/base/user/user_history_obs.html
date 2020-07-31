@@ -1,0 +1,100 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}User History{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">User History: Observations</h2>
+            <div class="justify-content-center" style="padding-left: 25px; padding-right: 25px">
+                    <hr>
+
+                    <!--Observation Individuals-->
+                    {% if obs_i_num >= 1 %}
+                        <div style="padding-top: 20px">
+                     <h4 style="text-align: center">Observation Individuals</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">ID</th>
+                          <th scope="col">Client Location</th>
+                          <th scope="col">Client Homeless</th>
+                          <th scope="col">Client Age</th>
+                            <th scope="col">Client Gender</th>
+                          <th scope="col">Client Race</th>
+                          <th scope="col">Client Ethnicity</th>
+                          <th scope="col">Client Information</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in gen_obs_ind_objects_fin %}
+                            <tr>
+                              <th>{{ q.num }}</th>
+                              <td>{{ q.id }}</td>
+                              <td>{{ q.client_location }}</td>
+                              <td>{{ q.upd_client_homeless }}</td>
+                              <td>{{ q.upd_client_age }}</td>
+                              <td>{{ q.upd_client_gender }}</td>
+                              <td>{{ q.upd_client_race }}</td>
+                              <td>{{ q.upd_client_ethnicity }}</td>
+                              <td>{{ q.client_information }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+
+                <!--General Observations-->
+                {% if g_obs_num >= 1 %}
+                    <div style="padding-top: 20px">
+                    <h4 style="text-align: center">General Observations</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                          <th scope="col">Observation Reason</th>
+                          <th scope="col"># Adults</th>
+                          <th scope="col"># Children</th>
+                            <th scope="col"># Unsure</th>
+                          <th scope="col"># Household</th>
+                          <th scope="col">Client(s)</th>
+                          <th scope="col">Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in gen_obs_objects_fin %}
+                            <tr>
+                              <th>{{ q.num }}</th>
+                              <td>{{ q.upd_obs_reason }}</td>
+                              <td>{{ q.obs_adults }}</td>
+                              <td>{{ q.obs_children }}</td>
+                              <td>{{ q.obs_unsure }}</td>
+                              <td>{{ q.obs_householdnum }}</td>
+                              <td>{{ q.clients }}</td>
+                              <td>{{ q.obs_time }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+
+
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}

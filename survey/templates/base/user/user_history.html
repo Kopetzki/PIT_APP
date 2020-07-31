@@ -9,115 +9,27 @@
             <div class="card-body">
 
             <h2 style="text-align: center">User History</h2>
-
                 <div class="container">
                     <hr>
 
-                    {% if obs_i_num >= 1 %}
-                     <h4 style="text-align: center">Observation Individuals</h4>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ID</th>
-                          <th scope="col">Client Location</th>
-                          <th scope="col">Client Homeless</th>
-                          <th scope="col">Client Age</th>
-                            <th scope="col">Client Gender</th>
-                          <th scope="col">Client Race</th>
-                          <th scope="col">Client Ethnicity</th>
-                          <th scope="col">Client Information</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for q in gen_obs_ind_objects_fin %}
-                            <tr>
-                              <th>{{ q.num }}</th>
-                              <td>{{ q.id }}</td>
-                              <td>{{ q.client_location }}</td>
-                              <td>{{ q.upd_client_homeless }}</td>
-                              <td>{{ q.upd_client_age }}</td>
-                              <td>{{ q.upd_client_gender }}</td>
-                              <td>{{ q.upd_client_race }}</td>
-                              <td>{{ q.upd_client_ethnicity }}</td>
-                              <td>{{ q.client_information }}</td>
-                            </tr>
+                    <div class="row">
+                        <div class="col">
+                            <p style="text-align: center">To see history of Observations submitted</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="/user_history_obs" class="btn btn-info" role="button">Observations</a>
+                            </div>
+                        </div>
 
-                        {% endfor %}
+                        <div class="col">
+                            <p style="text-align: center">To see history of Surveys submitted</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="/user_history_surv" class="btn btn-success" role="button">Surveys</a>
+                              </div>
+                        </div>
 
-                      </tbody>
-                    </table>
-                {% endif %}
-
-                {% if g_obs_num >= 1 %}
-                    <h4 style="text-align: center">General Observations</h4>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                          <th scope="col">Observation Reason</th>
-                          <th scope="col"># Adults</th>
-                          <th scope="col"># Children</th>
-                            <th scope="col"># Unsure</th>
-                          <th scope="col"># Household</th>
-                          <th scope="col">Client(s)</th>
-                          <th scope="col">Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for q in gen_obs_objects_fin %}
-                            <tr>
-                              <th>{{ q.num }}</th>
-                              <td>{{ q.upd_obs_reason }}</td>
-                              <td>{{ q.obs_adults }}</td>
-                              <td>{{ q.obs_children }}</td>
-                              <td>{{ q.obs_unsure }}</td>
-                              <td>{{ q.obs_householdnum }}</td>
-                              <td>{{ q.clients }}</td>
-                              <td>{{ q.obs_time }}</td>
-                            </tr>
-
-                        {% endfor %}
-
-                      </tbody>
-                    </table>
-                {% endif %}
-
-                {% if surv_num >= 1 %}
-                    <h4 style="text-align: center">Surveys</h4>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                          <th scope="col">Survey Last Night</th>
-                          <th scope="col">Repeat</th>
-                            <th scope="col"># Adults</th>
-                          <th scope="col"># Children</th>
-                            <th scope="col"># Household</th>
-                          <th scope="col">Survey Client(s)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for q in survey_objects_fin %}
-                            <tr>
-                              <th>{{ q.num }}</th>
-                              <td>{{ q.upd_survey_lastnight }}</td>
-                              <td>{{ q.upd_survey_repeat }}</td>
-                              <td>{{ q.survey_adults }}</td>
-                              <td>{{ q.survey_children }}</td>
-                              <td>{{ q.survey_householdnum }}</td>
-                              <td>{{ q.clients }}</td>
-                            </tr>
-
-                        {% endfor %}
-
-                      </tbody>
-                    </table>
-                {% endif %}
+                    </div>
 
 
-                    
-                </div>
 
 
             </div>
