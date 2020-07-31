@@ -1,0 +1,42 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}User History{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">User History</h2>
+                <div class="container">
+                    <hr>
+
+                    <div class="row">
+                        <div class="col">
+                            <p style="text-align: center">To see history of your <b>Observations</b> submitted</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="/user_history_obs" class="btn btn-info" role="button">Observations</a>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <p style="text-align: center">To see history of your <b>Surveys</b> submitted</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="/user_history_surv" class="btn btn-success" role="button">Surveys</a>
+                              </div>
+                        </div>
+
+                    </div>
+
+
+
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}

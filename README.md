@@ -38,6 +38,7 @@ Examples PDFs of the forms:
     created functions to make the information readable to the user
     * Add individuals to forms more dynamically: the forms query individual form objects based on which user logged in
 * Expanded user registration forms and added "Profile" page based on user logged in
+* Added a user "History" page that allows users to see all forms they have submitted by category in table format
 
 ### Edwin Fuquen
 * To be filled in 

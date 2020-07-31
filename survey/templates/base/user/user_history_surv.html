@@ -1,0 +1,174 @@
+{% extends "mainTemplate.html" %}
+
+{% block title %}User History{% endblock %}
+
+{% block content %}
+    <style>
+    table {
+          table-layout: fixed;
+        }
+
+    </style>
+
+    <div class="container-fluid">
+        <div style="padding-top: 100px; padding-left: 10px">
+        <div class="card">
+            <div class="card-body">
+
+            <h2 style="text-align: center">User History: Surveys</h2>
+            <div class="justify-content-center" style="padding-left: 5px; padding-right: 5px">
+                    <hr>
+
+                <!--Check if no survey forms have been submitted-->
+                    {% if no_surv == True %}
+                        <p style="text-align: center">No Surveys submitted yet!</p>
+                    {% endif %}
+
+                <!--Survey Individuals-->
+                {% if surv_i_num >= 1 %}
+                    <div style="padding-top: 20px">
+                    <h4 style="text-align: center">Survey Individuals</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th scope="col" style="font-size: small">Client Initials</th>
+                            <th scope="col" style="font-size: x-small">Rel. to Head of Household</th>
+                            <th scope="col" style="font-size: x-small">Staying with Head</th>
+                            <th scope="col" style="font-size: x-small">Where Staying Tonight</th>
+                            <th scope="col" style="font-size: small">Age Exact</th>
+                            <!---<th scope="col" style="font-size: small">Age Grouped</th> -->
+                            <th scope="col" style="font-size: small">Ethnicity</th>
+                            <th scope="col" style="font-size: small">Race</th>
+                            <th scope="col" style="font-size: small">Race Other</th>
+                            <th scope="col" style="font-size: small">Gender</th>
+                            <th scope="col" style="font-size: small">Served</th>
+                            <th scope="col" style="font-size: small">Guard Res</th>
+                            <th scope="col" style="font-size: small">VHA</th>
+                            <th scope="col" style="font-size: x-small">Veteran's Benefits</th>
+                            <th scope="col" style="font-size: small">First Time</th>
+                            <th scope="col" style="font-size: x-small">Homeless Length</th>
+                            <th scope="col" style="font-size: x-small">Homeless Number</th>
+                            <th scope="col" style="font-size: x-small">Hist. Time Homeless</th>
+                            <th scope="col" style="font-size: x-small">Hist. Length Homeless</th>
+                            <th scope="col" style="font-size: x-small">Hist. Homeless Number</th>
+                            <th scope="col" style="font-size: x-small">Over 18 ID</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in survey_ind_objects_fin %}
+                            <tr>
+                              <td>{{ q.client_survey_initials }}</td>
+                              <td>{{ q.upd_s_i_relationship }}</td>
+                              <td>{{ q.upd_s_i_hhconfirm }}</td>
+                              <td style="font-size: small">{{ q.client_survey_nonhhlastnight }}</td>
+                              <td>{{ q.client_survey_age_exact }}</td>
+                              <!---<td>{{ q.upd_s_i_age_g }}</td> -->
+                              <td>{{ q.upd_s_i_ethnicity }}</td>
+                              <td style="font-size: small">{{ q.upd_s_i_race }}</td>
+                              <td>{{ q.client_survey_race_other }}</td>
+                              <td style="font-size: small">{{ q.upd_s_i_gender }}</td>
+                              <td>{{ q.upd_s_i_served }}</td>
+                              <td>{{ q.client_survey_served_guard_res }}</td>
+                              <td>{{ q.client_survey_served_VHA }}</td>
+                              <td>{{ q.client_survey_benefits }}</td>
+                              <td>{{ q.upd_s_i_firsttime }}</td>
+                              <td>{{ q.upd_s_i_homeless_length }}</td>
+                              <td>{{ q.client_survey_homelesslength_number }}</td>
+                              <td style="font-size: small">{{ q.upd_s_i_t_homeless }}</td>
+                              <td>{{ q.upd_s_i_t_homeless_length }}</td>
+                              <td>{{ q.client_survey_timeshomeless_number }}</td>
+                             <td>{{ q.client_survey_over18_id }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+
+                <!--Survey Individual Extras-->
+                {% if surv_e_num >= 1 %}
+                    <div style="padding-top: 20px">
+                    <h4 style="text-align: center">Survey Individual Extras</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Substance</th>
+                          <th scope="col">Mental Health</th>
+                          <th scope="col">Physical Health</th>
+                          <th scope="col">Stable Housing</th>
+                          <th scope="col">Barriers</th>
+                          <th scope="col">Special Education</th>
+                          <th scope="col">HIV/AIDS</th>
+                          <th scope="col">Domestic Violence</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in survey_ind_extra_objects_fin %}
+                            <tr>
+                              <th>{{ q.id }}</th>
+                              <td>{{ q.upd_s_e_substance }}</td>
+                              <td>{{ q.upd_s_e_mhealth }}</td>
+                              <td>{{ q.upd_s_e_phealth }}</td>
+                              <td>{{ q.upd_s_e_stablehousing }}</td>
+                              <td>{{ q.upd_s_e_barriers_list }}</td>
+                              <td>{{ q.upd_s_e_specialed }}</td>
+                              <td>{{ q.upd_s_e_HIVAIDS }}</td>
+                              <td>{{ q.upd_s_e_DV }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+
+                <!--Surveys-->
+                {% if surv_num >= 1 %}
+                    <div style="padding-top: 20px">
+                    <h4 style="text-align: center">Surveys</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Survey Last Night</th>
+                          <th scope="col">Repeat</th>
+                          <th scope="col"># Adults</th>
+                          <th scope="col"># Children</th>
+                          <th scope="col"># Household</th>
+                          <th scope="col">Survey Client(s)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for q in survey_objects_fin %}
+                            <tr>
+                              <th>{{ q.num }}</th>
+                              <td>{{ q.upd_survey_lastnight }}</td>
+                              <td>{{ q.upd_survey_repeat }}</td>
+                              <td>{{ q.survey_adults }}</td>
+                              <td>{{ q.survey_children }}</td>
+                              <td>{{ q.survey_householdnum }}</td>
+                              <td>{{ q.clients }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+
+
+
+
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}
