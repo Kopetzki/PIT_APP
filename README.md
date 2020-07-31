@@ -17,7 +17,13 @@ Examples PDFs of the forms:
 * To be filled in 
 
 ### Timothy Crowley
-* To be filled in 
+* Login & Registration
+    * Users propogate to Admin dashboard
+    * Recognize user group on login
+    * Implement different user flows based on group
+* User groupings
+    * Custom permissions for each group
+    * Process for admin to easily move users to different groups
 
 ### Zoe Frongillo
 * Front end UI design
