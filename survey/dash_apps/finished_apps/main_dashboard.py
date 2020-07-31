@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 from itertools import chain
 import dash_table
 import pandas as pd
+import dash
 
 from dash.dependencies import Input, Output
 
@@ -403,6 +404,7 @@ def admin_table(users):
     df = df.drop('password', 1)
     table = dash_table.DataTable(
         id='user_table',
+        filter_action='native',
         columns = [{"name": i, "id":i} for i in df.columns],
         data=df.to_dict('records'),
         export_format='csv'
@@ -443,10 +445,8 @@ def layout():
     survey_exists = Observation_Individual.objects.exists()
     if survey_exists:
       return html.Div([
-        dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(label='Survey Data', value='tab-1'),
-        dcc.Tab(label='Admin', value='tab-2', disabled = False),
-        ]),
+        html.Div(id='none', children=[], style={'display': 'none'}),
+        dcc.Tabs(id='tabs', value='tab-1'),
         html.Div(id='main-dashboard')
         ])
     else:
@@ -456,10 +456,22 @@ def layout():
 
 
 
+@app.expanded_callback(
+    dash.dependencies.Output('tabs','children'),
+    [dash.dependencies.Input('none', 'children')]
+    )
+def render_hidded_tab(*args, **kwargs):
+    user_is_admin = not kwargs['user'].is_staff
+    return [
+        dcc.Tab(label='Survey Data', value='tab-1'),
+        dcc.Tab(label='Admin', value='tab-2', disabled = user_is_admin),
+        ]
+
 #tabs for main dashboard/admin dashboard
-@app.callback(Output('main-dashboard', 'children'),
-              [Input('tabs', 'value')])
-def render_content(tab):
+@app.expanded_callback(dash.dependencies.Output('main-dashboard', 'children'),
+              [dash.dependencies.Input('tabs', 'value')])
+def render_content(tab, *args, **kwargs):
+    user_is_admin = kwargs['user'].is_staff
     obs_inds = Observation.objects.all()
     inds = Observation_Individual.objects.all()
     sur_inds_sur = Survey.objects.all()
@@ -468,12 +480,15 @@ def render_content(tab):
     if tab == 'tab-1':
         return main_dashboard(obs_inds , inds, sur_inds_sur, inds_sur, inds_sur_ex)
     elif tab == 'tab-2':
-        users = User.objects.all()
-        return admin_dashboard(users)
+        if user_is_admin:
+            users = User.objects.all()
+            return admin_dashboard(users)
+        else:
+            return html.H2("You must be an Administrator to view this page")
 
-@app.callback(Output('data-dashboard', 'children'),
-              [Input('tabs_2', 'value')])
-def render_data_dashboard(tab):
+@app.expanded_callback(dash.dependencies.Output('data-dashboard', 'children'),
+              [dash.dependencies.Input('tabs_2', 'value')])
+def render_data_dashboard(tab, *args, **kwargs):
     if tab == 'tab-1':
         data = Observation.objects.all()
         return data_table(data)
@@ -486,5 +501,7 @@ def render_data_dashboard(tab):
     elif tab == 'tab-4':
         data = Survey_Individual.objects.all()
         return data_table(data)
+
+
 
 app.layout = layout
