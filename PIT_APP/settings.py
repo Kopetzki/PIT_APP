@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # Form conditions
     'formtools',
     # Debug page loading perf.
-    'debug_toolbar',
+    #'debug_toolbar',
     'compressor',
 ]
 
