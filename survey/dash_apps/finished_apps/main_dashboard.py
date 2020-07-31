@@ -203,15 +203,30 @@ def race_graph(inds, inds_sur):
     return figure
 
 def sub_populations(inds, inds_sur, inds_sur_ex):
-    vets = inds_sur.filter(client_survey_served=1).values('client_survey_served').annotate(dcount=Count('client_survey_served'))[0]['dcount']
-    ethnicity = inds_sur.filter(client_survey_ethnicity=1).values(
+    try:
+        vets = inds_sur.filter(client_survey_served=1).values('client_survey_served').annotate(dcount=Count('client_survey_served'))[0]['dcount']
+    except IndexError:
+        vets = 0
+    try:
+        ethnicity = inds_sur.filter(client_survey_ethnicity=1).values(
                 'client_survey_ethnicity').annotate(dcount=Count(
                 'client_survey_ethnicity'))[0]['dcount'] +inds.filter(
                  client_ethnicity=1).values('client_ethnicity').annotate(
                 dcount=Count('client_ethnicity'))[0]['dcount']
-    first_time = inds_sur.filter(client_surey_firsttime=1).values('client_surey_firsttime').annotate(dcount=Count('client_surey_firsttime'))[0]['dcount']
-    dv_victim = inds_sur_ex.filter(client_survey_DV=1).values('client_survey_DV').annotate(dcount=Count('client_survey_DV'))[0]['dcount']
-    hiv = inds_sur_ex.filter(client_survey_HIVAIDS=1).values('client_survey_HIVAIDS').annotate(dcount=Count('client_survey_HIVAIDS'))[0]['dcount']
+    except IndexError:
+        ethnicity = 0
+    try:
+        first_time = inds_sur.filter(client_surey_firsttime=1).values('client_surey_firsttime').annotate(dcount=Count('client_surey_firsttime'))[0]['dcount']
+    except IndexError:
+        first_time = 0
+    try:
+        dv_victim = inds_sur_ex.filter(client_survey_DV=1).values('client_survey_DV').annotate(dcount=Count('client_survey_DV'))[0]['dcount']
+    except IndexError:
+        dv_victim = 0
+    try:
+        hiv = inds_sur_ex.filter(client_survey_HIVAIDS=1).values('client_survey_HIVAIDS').annotate(dcount=Count('client_survey_HIVAIDS'))[0]['dcount']
+    except IndexError:
+        hiv = 0
 
     values = [vets, ethnicity, first_time, dv_victim, hiv]
     annotations = ["Veterans", "Hispanic", "First Time Homeless", "Homeless due to Domestic Violence", "HIV/AIDS"]
