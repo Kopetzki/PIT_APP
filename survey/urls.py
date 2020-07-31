@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 
 from . import views
@@ -48,6 +49,9 @@ urlpatterns = [
     path('survey_new/', views.survey_new, name='survey_new'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
