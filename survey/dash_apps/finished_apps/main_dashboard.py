@@ -22,6 +22,69 @@ colors = ["#6CD6C3", "#DDCAF5", "#D0E46B", "#6ED2E6", "#6BB4D5", "#6B7FD5", "#6B
 config = {'displayModeBar': False}
 
 
+
+def column_properties(data):
+    columns = []
+    if data == 1:
+        columns = [
+            {'name': 'ID', 'id': 'id', 'type': 'numeric'},
+            {'name': 'Reason', 'id': 'obs_reason', 'type': 'numeric'},
+            {'name': 'Adults', 'id': 'obs_adults', 'type': 'numeric'},
+            {'name': 'Children', 'id': 'obs_children', 'type': 'numeric'},
+            {'name': 'Unsure', 'id': 'obs_unsure', 'type': 'numeric'},
+            {'name': 'Household Total', 'id': 'obs_householdnum', 'type': 'numeric'},
+            {'name': 'Time Observed', 'id': 'obs_time', 'type': 'datetime'},
+            {'name': 'User ID', 'id': 'obs_user_id', 'type': 'numeric'},
+        ]
+    if data == 2:
+        columns = [
+            {'name': 'ID', 'id': 'id', 'type': 'numeric'},
+            {'name': 'Location', 'id': 'client_location', 'type': 'text'},
+            {'name': 'Homeless', 'id': 'client_homeless_id', 'type': 'numeric'},
+            {'name': 'Age', 'id': 'client_age_id', 'type': 'numeric'},
+            {'name': 'Gender', 'id': 'client_gender_id', 'type': 'numeric'},
+            {'name': 'Ethnicity', 'id': 'client_ethnicity_id', 'type': 'numeric'},
+            {'name': 'Extra Information', 'id': 'client_information', 'type': 'text'},
+            {'name': 'User ID', 'id': 'c_obs_user_id', 'type': 'numeric'},
+        ]
+    if data == 3:
+        columns = [
+            {'name': 'ID', 'id': 'id', 'type': 'numeric'},
+            {'name': 'Last Night', 'id': 'survey_lastnight_id', 'type': 'numeric'},
+            {'name': 'Repeat Survey', 'id': 'survey_repeat', 'type': 'numeric'},
+            {'name': 'Adults', 'id': 'survey_adults', 'type': 'numeric'},
+            {'name': 'Children', 'id': 'survey_children', 'type': 'numeric'},
+            {'name': 'Household Total', 'id': 'survey_householdnum', 'type': 'numeric'},
+            {'name': 'User ID', 'id': 'survey_user_id', 'type': 'numeric'},
+        ]
+    if data == 4:
+        columns = [
+            {'name': 'ID', 'id': 'id', 'type': 'numeric'},
+            {'name': 'Initials', 'id': 'client_survey_initials', 'type': 'text'},
+            {'name': 'HoH Relationship', 'id': 'client_survey_relationship_id', 'type': 'numeric'},
+            {'name': 'HoH Confirm', 'id': 'client_survey_hhconfirm', 'type': 'numeric'},
+            {'name': 'Last Night Stay', 'id': 'client_survey_nonhhlastnight', 'type': 'text'},
+            {'name': 'Exact Age', 'id': 'client_survey_age_exact', 'type': 'numeric'},
+            {'name': 'Age Group', 'id': 'client_survey_age_grouped_id', 'type': 'numeric'},
+            {'name': 'Ethnicity', 'id': 'client_survey_ethnicity', 'type': 'numeric'},
+            {'name': 'Race Other', 'id': 'client_survey_race_other', 'type': 'text'},
+            {'name': 'Gender', 'id': 'client_survey_gender_id', 'type': 'numeric'},
+            {'name': 'Veteran', 'id': 'client_survey_served', 'type': 'numeric'},
+            {'name': 'Guard/Reserve', 'id': 'client_survey_served_guard_res', 'type': 'numeric'},
+            {'name': 'VHA Benefits', 'id': 'client_survey_served_VHA', 'type': 'numeric'},
+            {'name': 'SSI/SSDI', 'id': 'client_survey_benefits', 'type': 'numeric'},
+            {'name': 'First Time', 'id': 'client_surey_firsttime', 'type': 'numeric'},
+            {'name': 'Homeless Length', 'id': 'client_survey_homelesslength_id', 'type': 'numeric'},
+            {'name': 'Homeless Length Number', 'id': 'client_survey_homelesslength_number', 'type': 'numeric'},
+            {'name': 'Times Homeless', 'id': 'client_survey_timeshomeless_id', 'type': 'numeric'},
+            {'name': 'Times Homeless Type', 'id': 'client_survey_timeshomeless_length_id', 'type': 'numeric'},
+            {'name': 'Times Homeless Num', 'id': 'client_survey_timeshomeless_number', 'type': 'numeric'},
+            {'name': 'ExtraID', 'id': 'client_survey_over18_id', 'type': 'numeric'},
+            {'name': 'User ID', 'id': 's_obs_user_id', 'type': 'numeric'},
+        ]
+    return columns
+
+
 def pop_count_graph(obs_inds , inds, sur_inds_sur, inds_sur):
     #graph that counts households + individuals
     xaxis = ['Groups', 'Individuals']
@@ -405,19 +468,35 @@ def admin_table(users):
     table = dash_table.DataTable(
         id='user_table',
         filter_action='native',
+        sort_action="native",
         columns = [{"name": i, "id":i} for i in df.columns],
         data=df.to_dict('records'),
-        export_format='csv'
+        export_format='csv',
+        page_action='none',
+        style_table={
+            'overflowX': 'auto',
+            'height': '300px',
+            'overflowY': 'auto'
+        }
     )
     return table
 
-def data_table(data):
+def data_table(data, columns):
     df = pd.DataFrame(data.values())
     table = dash_table.DataTable(
         id='data_table',
-        columns=[{"name": i, "id": i} for i in df.columns],
+        #columns=[{"name": i, "id": i} for i in df.columns],
+        columns = columns,
         data=df.to_dict('records'),
-        export_format='csv'
+        export_format='csv',
+        sort_action="native",
+        filter_action='native',
+        page_action='none',
+        style_table={
+            'overflowX': 'auto',
+            'height': '300px',
+            'overflowY': 'auto'
+        }
     )
     return table
 
@@ -491,16 +570,16 @@ def render_content(tab, *args, **kwargs):
 def render_data_dashboard(tab, *args, **kwargs):
     if tab == 'tab-1':
         data = Observation.objects.all()
-        return data_table(data)
+        return data_table(data, column_properties(1))
     elif tab == 'tab-2':
         data = Observation_Individual.objects.all()
-        return data_table(data)
+        return data_table(data, column_properties(2))
     elif tab == 'tab-3':
         data = Survey.objects.all()
-        return data_table(data)
+        return data_table(data, column_properties(3))
     elif tab == 'tab-4':
         data = Survey_Individual.objects.all()
-        return data_table(data)
+        return data_table(data, column_properties(4))
 
 
 
