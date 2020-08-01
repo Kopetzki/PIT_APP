@@ -43,7 +43,14 @@ Examples PDFs of the forms:
 * Added a user "History" page that allows users to see all forms they have submitted by category in table format
 
 ### Edwin Fuquen
-* To be filled in 
+* Setup local testing and PyPi deployment.
+* Optimized pages to be responsive on mobile screens.
+* Performance tweaks to reduce page load times.
+* Number of bug fixes and UI tweaks/enhancements.
+  * Removed duplicative fields on forms and computed them on the backend.
+  * Fixed a few login and regisration bugs.
+  * Improved the navbar to have highlights on hover.
+  * Added flow from home page, to registration, to login to forms.
 
 ### Edin Sabanovic
 * Initial setup of postgres db that was scrapped
