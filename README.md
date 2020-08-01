@@ -12,6 +12,8 @@ Examples PDFs of the forms:
 2. Start locally by going to http://127.0.0.1:8000/
 3. Set up an account and submit surveys
 
+For this production deployment, a newly registered user is automatically made an Admin which gives access to the Django Admin Dashboard.  When deployed at a volunteer event, this automation can be turned off.  This is how the system is designed to work, with newly registered users automatically being placed into the "Unapproved Users" group.  In this deployment however, your registration will make you an Admin, granting access to all features available in the system.  
+
 ![Admin User Guide](https://user-images.githubusercontent.com/46574970/89105668-2d5efb80-d3f1-11ea-8f08-c72432a6a5dd.png)
 
 ## Contributions
