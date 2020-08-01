@@ -46,4 +46,6 @@ Examples PDFs of the forms:
 * To be filled in 
 
 ### Edin Sabanovic
-* To be filled in 
+* Initial setup of postgres db that was scrapped
+* Data Model
+* Charts/Admin Dashboard

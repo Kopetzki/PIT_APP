@@ -22,7 +22,7 @@ colors = ["#6CD6C3", "#DDCAF5", "#D0E46B", "#6ED2E6", "#6BB4D5", "#6B7FD5", "#6B
 config = {'displayModeBar': False}
 
 
-
+#defines the column data properties
 def column_properties(data):
     columns = []
     if data == 1:
