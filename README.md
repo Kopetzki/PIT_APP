@@ -12,6 +12,8 @@ Examples PDFs of the forms:
 2. Start locally by going to http://127.0.0.1:8000/
 3. Set up an account and submit surveys
 
+![Admin User Guide](https://user-images.githubusercontent.com/46574970/89105668-2d5efb80-d3f1-11ea-8f08-c72432a6a5dd.png)
+
 ## Contributions
 ### Justin Calma
 * To be filled in 
