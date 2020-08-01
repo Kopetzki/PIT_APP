@@ -98,7 +98,7 @@
                   {% endif %}
 
                 {% if user.is_authenticated %}
-                  <li class="nav-item {% if request.path == '/user_history/' %}active{% endif %}">
+                  <li class="nav-item {% if request.path == '/user_history/' or request.path == '/user_history_obs/' or request.path == '/user_history_surv/' %}active{% endif %}">
                     <a class="nav-link" href="/user_history">History{% if request.path == '/user_history/' %} <span class="sr-only">(current)</span>{% endif %}</a>
                   </li>
                   {% endif %}
